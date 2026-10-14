@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — JobNest Support & Help Center</title>
+  <meta name="description" content="Reach the JobNest support team for queries, employer onboarding, candidate guidance, and partnership inquiries.">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Demo Notice Banner -->
+  <div class="demo-banner">
+    <span>💡 <strong>Frontend Demo Notice:</strong> Contact messages are stored locally in browser storage as no backend email service is connected.</span>
+    <button class="btn-reset-quick btn-reset-demo-data" type="button">Reset Demo Data</button>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+          Job<span>Nest</span>
+        </a>
+
+        <div class="nav-links-desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="jobs.html" class="nav-link">Jobs</a>
+          <a href="companies.html" class="nav-link">Companies</a>
+          <a href="about.html" class="nav-link">About Us</a>
+          <a href="contact.html" class="nav-link active">Contact Us</a>
+        </div>
+
+        <div class="nav-actions" id="nav-auth-container"></div>
+
+        <button class="mobile-nav-toggle" id="mobileMenuBtn" aria-label="Open Navigation Menu">
+          <i data-lucide="menu" class="icon-lg"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer-overlay" id="mobileNavOverlay"></div>
+  <div class="mobile-drawer" id="mobileNavDrawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+    <div class="mobile-drawer-header">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+        Job<span>Nest</span>
+      </a>
+      <button class="mobile-drawer-close" id="mobileNavCloseBtn" aria-label="Close Navigation Menu">&times;</button>
+    </div>
+    <div class="mobile-drawer-body">
+      <div id="mobile-nav-auth-container"></div>
+      <div class="mobile-nav-links">
+        <a href="index.html" class="mobile-nav-link"><i data-lucide="home" class="icon-sm"></i> Home</a>
+        <a href="jobs.html" class="mobile-nav-link"><i data-lucide="briefcase" class="icon-sm"></i> Jobs</a>
+        <a href="companies.html" class="mobile-nav-link"><i data-lucide="building-2" class="icon-sm"></i> Companies</a>
+        <a href="about.html" class="mobile-nav-link"><i data-lucide="info" class="icon-sm"></i> About Us</a>
+        <a href="contact.html" class="mobile-nav-link active"><i data-lucide="mail" class="icon-sm"></i> Contact Us</a>
+      </div>
+    </div>
+  </div>
+
+  <main style="padding-top: var(--space-2xl); padding-bottom: var(--space-3xl);">
+    <div class="container">
+      
+      <!-- Page Header -->
+      <div class="section-title-wrap mb-5">
+        <span class="section-tag">Help & Support</span>
+        <h1 class="section-title">We'd Love to Hear From You</h1>
+        <p class="section-desc">Have a question regarding job applications, employer verification, or partnership opportunities? Reach out below.</p>
+      </div>
+
+      <div class="grid" style="grid-template-columns: 1.25fr 1fr; gap: var(--space-2xl); align-items: start;">
+        
+        <!-- Contact Form Card -->
+        <div class="card" style="padding: var(--space-2xl) var(--space-xl);">
+          <h2 class="text-xl font-bold mb-1">Send a Message</h2>
+          <p class="text-xs text-muted mb-4">
+            <em>Note: This is a frontend demo application. Your inquiry will be recorded in LocalStorage and confirmed with live toast feedback.</em>
+          </p>
+
+          <!-- Success Alert Banner -->
+          <div id="contactSuccessAlert" class="card mb-4" style="display: none; padding: 1rem; border-left: 4px solid var(--success); background-color: var(--success-light); color: var(--success-text);">
+            <div class="flex items-center gap-2">
+              <i data-lucide="check-circle" class="icon-sm"></i>
+              <strong>Thank you for contacting JobNest!</strong>
+            </div>
+            <p class="text-xs mt-1" style="color: var(--success-text);">
+              Your simulated inquiry has been logged in browser storage. Our support team would typically respond within 24 business hours.
+            </p>
+          </div>
+
+          <form id="contactForm" novalidate>
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label" for="contactName">Your Name <span class="required">*</span></label>
+                <input type="text" id="contactName" class="form-control" required placeholder="e.g. Vikram Malhotra">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="contactEmail">Email Address <span class="required">*</span></label>
+                <input type="email" id="contactEmail" class="form-control" required placeholder="name@example.com">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contactSubject">Subject / Topic <span class="required">*</span></label>
+              <input type="text" id="contactSubject" class="form-control" required placeholder="e.g. Query regarding Employer Onboarding">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contactMessage">Message Content <span class="required">*</span></label>
+              <textarea id="contactMessage" class="form-textarea" placeholder="How can our support team assist you today?" required style="min-height: 140px;"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block mt-3" id="submitContactBtn">
+              <i data-lucide="send" class="icon-sm"></i> Send Message
+            </button>
+          </form>
+        </div>
+
+        <!-- Contact Information & FAQs -->
+        <div>
+          <!-- Direct Info Card -->
+          <div class="card mb-4" style="padding: var(--space-xl);">
+            <h3 class="text-lg font-bold mb-3">Office & Direct Channels</h3>
+            
+            <div class="footer-contact-info" style="gap: 1.25rem;">
+              <div class="flex items-start gap-3">
+                <div class="stat-icon-box stat-icon-blue" style="width: 40px; height: 40px; border-radius: 50%;">
+                  <i data-lucide="map-pin" class="icon-sm"></i>
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-main">Headquarters</h4>
+                  <p class="text-xs text-secondary mt-1">Tech Hub Innovation Park, Outer Ring Road, Bengaluru, Karnataka 560103, India</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="stat-icon-box stat-icon-green" style="width: 40px; height: 40px; border-radius: 50%;">
+                  <i data-lucide="mail" class="icon-sm"></i>
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-main">Email Support</h4>
+                  <p class="text-xs text-secondary mt-1">support@jobnest-portal.demo<br>partnerships@jobnest-portal.demo</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <div class="stat-icon-box stat-icon-purple" style="width: 40px; height: 40px; border-radius: 50%;">
+                  <i data-lucide="phone" class="icon-sm"></i>
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-main">Toll-Free Helpline</h4>
+                  <p class="text-xs text-secondary mt-1">+91 1800-JOB-NEST (Mon - Fri: 9:00 AM - 6:00 PM IST)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Frequently Asked Questions Accordion -->
+          <div class="card" style="padding: var(--space-xl);">
+            <h3 class="text-lg font-bold mb-3">Frequently Asked Questions</h3>
+            
+            <div class="footer-links-list" style="gap: 1rem;">
+              <div>
+                <h4 class="text-sm font-bold text-main">Is JobNest free for job seekers?</h4>
+                <p class="text-xs text-secondary mt-1">Yes, candidates can register, browse verified jobs, save bookmarks, and submit applications 100% free of charge.</p>
+              </div>
+
+              <div class="pt-2" style="border-top: 1px solid var(--surface-alt);">
+                <h4 class="text-sm font-bold text-main">How does employer verification work?</h4>
+                <p class="text-xs text-secondary mt-1">We inspect official corporate domains and corporate registrations to ensure candidates interact only with legitimate recruiters.</p>
+              </div>
+
+              <div class="pt-2" style="border-top: 1px solid var(--surface-alt);">
+                <h4 class="text-sm font-bold text-main">Where is my data stored in this demo?</h4>
+                <p class="text-xs text-secondary mt-1">All data persists in your browser's LocalStorage. You can reset it anytime via the "Reset Demo Data" button.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo" style="color: #FFFFFF;">
+            <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+            Job<span style="color: #60A5FA;">Nest</span>
+          </a>
+          <p>Connecting candidates with enterprise employers across India.</p>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Navigation</h4>
+          <div class="footer-links-list">
+            <a href="index.html" class="footer-link">Home</a>
+            <a href="jobs.html" class="footer-link">All Jobs</a>
+            <a href="companies.html" class="footer-link">Companies</a>
+            <a href="about.html" class="footer-link">About Us</a>
+            <a href="contact.html" class="footer-link">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Candidate Portals</h4>
+          <div class="footer-links-list">
+            <a href="seeker-dashboard.html" class="footer-link">My Dashboard</a>
+            <a href="applications.html" class="footer-link">Applied Status</a>
+            <a href="saved-jobs.html" class="footer-link">Saved Bookmarks</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Employer Access</h4>
+          <div class="footer-links-list">
+            <a href="post-job.html" class="footer-link">Post a Job</a>
+            <a href="employer-dashboard.html" class="footer-link">Recruiter Dashboard</a>
+            <button class="btn btn-secondary btn-sm btn-reset-demo-data mt-2" type="button">Reset Demo Data</button>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 JobNest Portal. Pure HTML5, CSS3, Vanilla JS.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Pre-fill user details if logged in
+      const currentUser = Auth.getCurrentUser();
+      if (currentUser) {
+        if (currentUser.name) document.getElementById("contactName").value = currentUser.name;
+        if (currentUser.email) document.getElementById("contactEmail").value = currentUser.email;
+      }
+
+      const form = document.getElementById("contactForm");
+      const nameInput = document.getElementById("contactName");
+      const emailInput = document.getElementById("contactEmail");
+      const subjectInput = document.getElementById("contactSubject");
+      const msgInput = document.getElementById("contactMessage");
+      const successAlert = document.getElementById("contactSuccessAlert");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        Validation.clearAllErrors(form);
+        successAlert.style.display = "none";
+
+        let isValid = true;
+        if (!nameInput.value.trim()) {
+          Validation.showError(nameInput, "Please enter your name.");
+          isValid = false;
+        }
+
+        if (!emailInput.value.trim()) {
+          Validation.showError(emailInput, "Please enter your email.");
+          isValid = false;
+        } else if (!Validation.isValidEmail(emailInput.value)) {
+          Validation.showError(emailInput, "Please enter a valid email address.");
+          isValid = false;
+        }
+
+        if (!subjectInput.value.trim()) {
+          Validation.showError(subjectInput, "Please specify a subject for your query.");
+          isValid = false;
+        }
+
+        if (!msgInput.value.trim()) {
+          Validation.showError(msgInput, "Please enter your message.");
+          isValid = false;
+        } else if (msgInput.value.trim().length < 10) {
+          Validation.showError(msgInput, "Message must be at least 10 characters long.");
+          isValid = false;
+        }
+
+        if (!isValid) return;
+
+        // Save message locally
+        Storage.saveContactMessage({
+          name: nameInput.value.trim(),
+          email: emailInput.value.trim(),
+          subject: subjectInput.value.trim(),
+          message: msgInput.value.trim()
+        });
+
+        successAlert.style.display = "block";
+        App.showToast("Your inquiry has been submitted successfully!", "success");
+        form.reset();
+
+        if (currentUser) {
+          if (currentUser.name) nameInput.value = currentUser.name;
+          if (currentUser.email) emailInput.value = currentUser.email;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
