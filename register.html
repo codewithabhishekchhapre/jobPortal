@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — JobNest Portal</title>
+  <meta name="description" content="Register as a Job Seeker to apply for jobs or as an Employer to post openings on JobNest.">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body style="background-color: #F8FAFC;">
+
+  <!-- Demo Notice Banner -->
+  <div class="demo-banner">
+    <span>💡 <strong>Frontend Demo Registration:</strong> New user accounts are saved to LocalStorage.</span>
+    <button class="btn-reset-quick btn-reset-demo-data" type="button">Reset Demo Data</button>
+  </div>
+
+  <!-- Minimal Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="navbar" style="justify-content: space-between;">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+          Job<span>Nest</span>
+        </a>
+        <a href="login.html" class="btn btn-outline btn-sm">
+          Already registered? Sign In
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding: var(--space-3xl) 0;">
+    <div class="container-narrow" style="max-width: 540px;">
+      
+      <!-- Registration Card -->
+      <div class="card" style="padding: var(--space-2xl) var(--space-xl);">
+        <div class="text-center mb-4">
+          <h1 class="text-2xl font-bold" style="font-size: 1.75rem;">Create Your Account</h1>
+          <p class="text-secondary text-sm mt-1">Join JobNest to unlock career opportunities or hire verified candidates</p>
+        </div>
+
+        <!-- Role Selector Toggle -->
+        <div class="mb-4">
+          <label class="form-label text-center">I am registering as:</label>
+          <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <label class="card" id="roleLabelSeeker" style="padding: 0.75rem 1rem; border: 2px solid var(--primary); background-color: var(--primary-light); cursor: pointer; text-align: center;">
+              <input type="radio" name="regUserRole" value="seeker" checked style="display: none;">
+              <i data-lucide="user" class="icon-md text-primary" style="margin: 0 auto 0.25rem auto;"></i>
+              <strong class="text-sm block text-main">Job Seeker</strong>
+              <span class="text-xs text-secondary">Looking for opportunities</span>
+            </label>
+
+            <label class="card" id="roleLabelEmployer" style="padding: 0.75rem 1rem; border: 2px solid var(--border-color); cursor: pointer; text-align: center;">
+              <input type="radio" name="regUserRole" value="employer" style="display: none;">
+              <i data-lucide="building" class="icon-md text-secondary" style="margin: 0 auto 0.25rem auto;"></i>
+              <strong class="text-sm block text-main">Employer</strong>
+              <span class="text-xs text-secondary">Hiring candidates</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Form Error Banner -->
+        <div id="registerAlertBox" class="card mb-3" style="display: none; padding: 0.75rem 1rem; border-left: 4px solid var(--danger); background-color: var(--danger-light); font-size: 0.875rem; color: var(--danger-text);">
+          <span id="registerAlertText"></span>
+        </div>
+
+        <form id="registerForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="regFullName">Full Name <span class="required">*</span></label>
+            <input type="text" id="regFullName" class="form-control" required placeholder="e.g. Aarav Sharma">
+          </div>
+
+          <!-- Dynamic Employer Company Name Field -->
+          <div class="form-group" id="regCompanyGroup" style="display: none;">
+            <label class="form-label" for="regCompanyName">Company / Organization Name <span class="required">*</span></label>
+            <input type="text" id="regCompanyName" class="form-control" placeholder="e.g. Acme Technologies Pvt Ltd">
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="regEmail">Email Address <span class="required">*</span></label>
+              <input type="email" id="regEmail" class="form-control" required placeholder="name@example.com">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="regPhone">Mobile Number <span class="required">*</span></label>
+              <input type="tel" id="regPhone" class="form-control" required placeholder="+91 9876543210">
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="regPassword">Password <span class="required">*</span></label>
+              <input type="password" id="regPassword" class="form-control" required placeholder="At least 6 characters">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="regConfirmPassword">Confirm Password <span class="required">*</span></label>
+              <input type="password" id="regConfirmPassword" class="form-control" required placeholder="Repeat password">
+            </div>
+          </div>
+
+          <div class="form-group mt-2">
+            <label class="form-checkbox-label">
+              <input type="checkbox" id="regTermsCheckbox" required>
+              <span>I agree to the <a href="about.html" class="text-primary" target="_blank">Terms & Conditions</a> and Privacy Policy</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg mt-3" id="registerSubmitBtn">
+            <i data-lucide="user-plus" class="icon-sm"></i> Complete Registration
+          </button>
+        </form>
+
+        <div class="text-center mt-4 pt-3" style="border-top: 1px solid var(--border-color); font-size: 0.875rem;">
+          <span class="text-secondary">Already have a JobNest account?</span>
+          <a href="login.html" class="font-semibold text-primary ml-1">Sign In</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="padding-top: var(--space-xl); padding-bottom: var(--space-xl);">
+    <div class="container text-center" style="font-size: 0.8125rem; color: #64748B;">
+      © 2026 JobNest Portal. Built with pure HTML5, CSS3 & Vanilla JavaScript.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      let selectedRole = "seeker";
+
+      // Check role param in URL (e.g. register.html?role=employer)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("role") === "employer") {
+        selectedRole = "employer";
+      }
+
+      const roleSeekerLabel = document.getElementById("roleLabelSeeker");
+      const roleEmployerLabel = document.getElementById("roleLabelEmployer");
+      const companyGroup = document.getElementById("regCompanyGroup");
+
+      function updateRoleUI() {
+        if (selectedRole === "seeker") {
+          roleSeekerLabel.style.borderColor = "var(--primary)";
+          roleSeekerLabel.style.backgroundColor = "var(--primary-light)";
+          roleEmployerLabel.style.borderColor = "var(--border-color)";
+          roleEmployerLabel.style.backgroundColor = "#FFFFFF";
+          companyGroup.style.display = "none";
+        } else {
+          roleEmployerLabel.style.borderColor = "var(--primary)";
+          roleEmployerLabel.style.backgroundColor = "var(--primary-light)";
+          roleSeekerLabel.style.borderColor = "var(--border-color)";
+          roleSeekerLabel.style.backgroundColor = "#FFFFFF";
+          companyGroup.style.display = "block";
+        }
+      }
+
+      roleSeekerLabel.addEventListener("click", () => {
+        selectedRole = "seeker";
+        updateRoleUI();
+      });
+
+      roleEmployerLabel.addEventListener("click", () => {
+        selectedRole = "employer";
+        updateRoleUI();
+      });
+
+      updateRoleUI();
+
+      // Form Submission
+      const form = document.getElementById("registerForm");
+      const nameInput = document.getElementById("regFullName");
+      const compInput = document.getElementById("regCompanyName");
+      const emailInput = document.getElementById("regEmail");
+      const phoneInput = document.getElementById("regPhone");
+      const passInput = document.getElementById("regPassword");
+      const confirmInput = document.getElementById("regConfirmPassword");
+      const termsCheckbox = document.getElementById("regTermsCheckbox");
+      const alertBox = document.getElementById("registerAlertBox");
+      const alertText = document.getElementById("registerAlertText");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        Validation.clearAllErrors(form);
+        alertBox.style.display = "none";
+
+        let isValid = true;
+
+        if (!nameInput.value.trim()) {
+          Validation.showError(nameInput, "Please enter your full name.");
+          isValid = false;
+        }
+
+        if (selectedRole === "employer" && !compInput.value.trim()) {
+          Validation.showError(compInput, "Please enter your company or organization name.");
+          isValid = false;
+        }
+
+        if (!emailInput.value.trim()) {
+          Validation.showError(emailInput, "Please enter your email address.");
+          isValid = false;
+        } else if (!Validation.isValidEmail(emailInput.value)) {
+          Validation.showError(emailInput, "Please enter a valid email address.");
+          isValid = false;
+        }
+
+        if (!Validation.isValidPhone(phoneInput.value)) {
+          Validation.showError(phoneInput, "Please enter a valid 10-15 digit mobile number.");
+          isValid = false;
+        }
+
+        if (!Validation.isValidPassword(passInput.value, 6)) {
+          Validation.showError(passInput, "Password must be at least 6 characters long.");
+          isValid = false;
+        }
+
+        if (passInput.value !== confirmInput.value) {
+          Validation.showError(confirmInput, "Passwords do not match. Please verify.");
+          isValid = false;
+        }
+
+        if (!termsCheckbox.checked) {
+          Validation.showError(termsCheckbox, "You must agree to the Terms & Conditions.");
+          isValid = false;
+        }
+
+        if (!isValid) return;
+
+        // Perform registration
+        const result = Auth.register({
+          name: nameInput.value.trim(),
+          email: emailInput.value.trim(),
+          password: passInput.value,
+          phone: phoneInput.value.trim(),
+          role: selectedRole,
+          companyName: selectedRole === "employer" ? compInput.value.trim() : ""
+        });
+
+        if (!result.success) {
+          alertBox.style.display = "block";
+          alertText.textContent = result.message;
+          return;
+        }
+
+        App.showToast(result.message, "success");
+
+        setTimeout(() => {
+          if (selectedRole === "employer") {
+            window.location.href = "employer-dashboard.html";
+          } else {
+            window.location.href = "seeker-dashboard.html";
+          }
+        }, 700);
+      });
+    });
+  </script>
+</body>
+</html>

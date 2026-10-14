@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobNest — Find Your Dream Job Today | Leading Job Portal</title>
+  <meta name="description" content="JobNest connects ambitious job seekers with leading employers and enterprises. Explore verified tech, product, and business jobs.">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Demo Notice Banner -->
+  <div class="demo-banner">
+    <span>💡 <strong>Frontend Demo:</strong> Data is saved in your browser's local storage. Demo Accounts: <code>seeker@demo.com</code> & <code>employer@demo.com</code> (pw: <code>password123</code>)</span>
+    <button class="btn-reset-quick btn-reset-demo-data" type="button">Reset Demo Data</button>
+  </div>
+
+  <!-- Header & Navbar -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <!-- Logo -->
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box">
+            <i data-lucide="briefcase" class="icon-md"></i>
+          </div>
+          Job<span>Nest</span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <div class="nav-links-desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="jobs.html" class="nav-link">Jobs</a>
+          <a href="companies.html" class="nav-link">Companies</a>
+          <a href="about.html" class="nav-link">About Us</a>
+          <a href="contact.html" class="nav-link">Contact Us</a>
+        </div>
+
+        <!-- Desktop Auth Actions Container (dynamic) -->
+        <div class="nav-actions" id="nav-auth-container">
+          <!-- Populated dynamically by app.js based on session -->
+          <a href="login.html" class="btn btn-ghost">Log In</a>
+          <a href="register.html" class="btn btn-primary">Register</a>
+        </div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-nav-toggle" id="mobileMenuBtn" aria-label="Open Navigation Menu">
+          <i data-lucide="menu" class="icon-lg"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-drawer-overlay" id="mobileNavOverlay"></div>
+  <div class="mobile-drawer" id="mobileNavDrawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+    <div class="mobile-drawer-header">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon-box">
+          <i data-lucide="briefcase" class="icon-md"></i>
+        </div>
+        Job<span>Nest</span>
+      </a>
+      <button class="mobile-drawer-close" id="mobileNavCloseBtn" aria-label="Close Navigation Menu">&times;</button>
+    </div>
+    <div class="mobile-drawer-body">
+      <div id="mobile-nav-auth-container">
+        <!-- Populated dynamically -->
+      </div>
+      <div class="mobile-nav-links">
+        <a href="index.html" class="mobile-nav-link"><i data-lucide="home" class="icon-sm"></i> Home</a>
+        <a href="jobs.html" class="mobile-nav-link"><i data-lucide="briefcase" class="icon-sm"></i> Jobs</a>
+        <a href="companies.html" class="mobile-nav-link"><i data-lucide="building-2" class="icon-sm"></i> Companies</a>
+        <a href="about.html" class="mobile-nav-link"><i data-lucide="info" class="icon-sm"></i> About Us</a>
+        <a href="contact.html" class="mobile-nav-link"><i data-lucide="mail" class="icon-sm"></i> Contact Us</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-badge">
+          <i data-lucide="sparkles" class="icon-xs"></i> #1 Platform for Verified Tech & Enterprise Careers
+        </div>
+        <h1 class="hero-title">
+          Find Your <span>Dream Job</span> Today
+        </h1>
+        <p class="hero-subtitle">
+          Discover thousands of career opportunities from India's top tech titans, startups, and Fortune 500 enterprises.
+        </p>
+
+        <!-- Hero Search Box -->
+        <div class="hero-search-card">
+          <form class="hero-search-form" id="heroSearchForm" action="jobs.html" method="GET">
+            <div class="search-input-group">
+              <i data-lucide="search" class="icon-md"></i>
+              <input type="text" name="q" id="heroKeyword" placeholder="Job title, keywords, or skills..." aria-label="Job Keyword">
+            </div>
+            <div class="search-divider"></div>
+            <div class="search-input-group">
+              <i data-lucide="map-pin" class="icon-md"></i>
+              <input type="text" name="loc" id="heroLocation" placeholder="Location (e.g. Bengaluru, Mumbai, Remote)" aria-label="Location">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i data-lucide="search" class="icon-sm"></i> Find Jobs
+            </button>
+          </form>
+        </div>
+
+        <!-- Popular Searches -->
+        <div class="popular-searches">
+          <span>Popular Searches:</span>
+          <a href="jobs.html?q=Python" class="popular-tag">Python</a>
+          <a href="jobs.html?q=React" class="popular-tag">React / Web</a>
+          <a href="jobs.html?q=Data+Analyst" class="popular-tag">Data Analyst</a>
+          <a href="jobs.html?mode=Remote" class="popular-tag">Remote</a>
+          <a href="jobs.html?q=TCS" class="popular-tag">TCS</a>
+          <a href="jobs.html?q=Infosys" class="popular-tag">Infosys</a>
+          <a href="jobs.html?type=Internship" class="popular-tag">Internships</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platform Metrics Bar -->
+    <section style="background-color: #FFFFFF; border-bottom: 1px solid var(--border-color); padding: 1.75rem 0;">
+      <div class="container">
+        <div class="stats-grid" style="margin-bottom: 0;">
+          <div class="stat-card" style="box-shadow: none; border: none; padding: 0.5rem;">
+            <div class="stat-icon-box stat-icon-blue"><i data-lucide="briefcase" class="icon-md"></i></div>
+            <div>
+              <div class="stat-number">25,000+</div>
+              <div class="stat-label">Active Job Openings</div>
+            </div>
+          </div>
+          <div class="stat-card" style="box-shadow: none; border: none; padding: 0.5rem;">
+            <div class="stat-icon-box stat-icon-green"><i data-lucide="building-2" class="icon-md"></i></div>
+            <div>
+              <div class="stat-number">1,200+</div>
+              <div class="stat-label">Verified Employers</div>
+            </div>
+          </div>
+          <div class="stat-card" style="box-shadow: none; border: none; padding: 0.5rem;">
+            <div class="stat-icon-box stat-icon-purple"><i data-lucide="users" class="icon-md"></i></div>
+            <div>
+              <div class="stat-number">500,000+</div>
+              <div class="stat-label">Registered Candidates</div>
+            </div>
+          </div>
+          <div class="stat-card" style="box-shadow: none; border: none; padding: 0.5rem;">
+            <div class="stat-icon-box stat-icon-amber"><i data-lucide="check-circle" class="icon-md"></i></div>
+            <div>
+              <div class="stat-number">96%</div>
+              <div class="stat-label">Interview Match Rate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Browse By Category Section -->
+    <section class="section">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-tag">Categories</span>
+          <h2 class="section-title">Explore Jobs by Category</h2>
+          <p class="section-desc">Find exciting roles matched to your core specialization and industry background.</p>
+        </div>
+
+        <div class="category-grid">
+          <a href="jobs.html?cat=Software+Development" class="category-card">
+            <div class="category-icon-box">
+              <i data-lucide="code" class="icon-lg"></i>
+            </div>
+            <h3 class="category-name">Software Development</h3>
+            <span class="category-count">Python, Java, Frontend, Full Stack</span>
+          </a>
+
+          <a href="jobs.html?cat=Data+%26+Analytics" class="category-card">
+            <div class="category-icon-box">
+              <i data-lucide="bar-chart-2" class="icon-lg"></i>
+            </div>
+            <h3 class="category-name">Data & Analytics</h3>
+            <span class="category-count">Data Analysts, BI, Big Data, SQL</span>
+          </a>
+
+          <a href="jobs.html?cat=Cloud+%26+DevOps" class="category-card">
+            <div class="category-icon-box">
+              <i data-lucide="cloud" class="icon-lg"></i>
+            </div>
+            <h3 class="category-name">Cloud & DevOps</h3>
+            <span class="category-count">AWS, GCP, Kubernetes, CI/CD, Cyber</span>
+          </a>
+
+          <a href="jobs.html?cat=Design+%26+Creative" class="category-card">
+            <div class="category-icon-box">
+              <i data-lucide="pen-tool" class="icon-lg"></i>
+            </div>
+            <h3 class="category-name">Design & Creative</h3>
+            <span class="category-count">UI/UX Design, Figma, Product UX</span>
+          </a>
+
+          <a href="jobs.html?cat=Marketing+%26+Sales" class="category-card">
+            <div class="category-icon-box">
+              <i data-lucide="trending-up" class="icon-lg"></i>
+            </div>
+            <h3 class="category-name">Marketing & Sales</h3>
+            <span class="category-count">SEO, Content, Growth, Tech Sales</span>
+          </a>
+
+          <a href="jobs.html?cat=Product+Management" class="category-card">
+            <div class="category-icon-box">
+              <i data-lucide="layers" class="icon-lg"></i>
+            </div>
+            <h3 class="category-name">Product Management</h3>
+            <span class="category-count">Associate PMs, Technical PMs, OKRs</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Jobs Section -->
+    <section class="section" style="background-color: #FFFFFF; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+      <div class="container">
+        <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <div>
+            <span class="section-tag">Featured Listings</span>
+            <h2 class="section-title" style="margin-bottom: 0;">Featured Job Opportunities</h2>
+          </div>
+          <a href="jobs.html" class="btn btn-outline">
+            View All Open Jobs <i data-lucide="arrow-right" class="icon-sm"></i>
+          </a>
+        </div>
+
+        <!-- Dynamic Featured Jobs Grid -->
+        <div class="jobs-grid" id="homeFeaturedJobsContainer">
+          <!-- Injected dynamically by home script -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Top Companies Section -->
+    <section class="section">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-tag">Top Employers</span>
+          <h2 class="section-title">Work at Leading Companies</h2>
+          <p class="section-desc">Get hired by industry pioneers, multinational tech conglomerates, and fast-growing unicorns.</p>
+        </div>
+
+        <div class="companies-grid" id="homeCompaniesContainer">
+          <!-- Injected dynamically by home script -->
+        </div>
+
+        <div class="text-center mt-5">
+          <a href="companies.html" class="btn btn-outline btn-lg">
+            Browse All 850+ Companies <i data-lucide="arrow-right" class="icon-sm"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Career Benefits / Platform Highlights -->
+    <section class="section" style="background-color: #FFFFFF; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-tag">Why JobNest</span>
+          <h2 class="section-title">Why Candidates & Employers Choose Us</h2>
+          <p class="section-desc">A transparent, reliable hiring ecosystem built for modern careers.</p>
+        </div>
+
+        <div class="category-grid">
+          <div class="category-card" style="cursor: default;">
+            <div class="category-icon-box"><i data-lucide="shield-check" class="icon-lg"></i></div>
+            <h3 class="category-name">100% Verified Employers</h3>
+            <p class="text-secondary text-sm">Every employer profile is vetted and verified to eliminate spam postings and fake recruiters.</p>
+          </div>
+
+          <div class="category-card" style="cursor: default;">
+            <div class="category-icon-box"><i data-lucide="send" class="icon-lg"></i></div>
+            <h3 class="category-name">One-Click Applications</h3>
+            <p class="text-secondary text-sm">Apply quickly using your pre-saved ATS-friendly resume and personalized cover notes.</p>
+          </div>
+
+          <div class="category-card" style="cursor: default;">
+            <div class="category-icon-box"><i data-lucide="activity" class="icon-lg"></i></div>
+            <h3 class="category-name">Real-Time Status Tracking</h3>
+            <p class="text-secondary text-sm">Never guess the status of your application. Get instant updates as your profile progresses to Shortlisted or Hired.</p>
+          </div>
+
+          <div class="category-card" style="cursor: default;">
+            <div class="category-icon-box"><i data-lucide="sliders" class="icon-lg"></i></div>
+            <h3 class="category-name">Precision Multi-Filters</h3>
+            <p class="text-secondary text-sm">Filter accurately by work mode (Remote / Hybrid / On-site), salary bracket, experience level, and required tech stack.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Employer Call to Action -->
+    <section class="section" style="background: linear-gradient(135deg, #1E40AF 0%, #2563EB 100%); color: #FFFFFF; text-align: center;">
+      <div class="container-narrow">
+        <span class="section-tag" style="background-color: rgba(255,255,255,0.2); color: #FFFFFF;">For Recruiters & Founders</span>
+        <h2 style="color: #FFFFFF; font-size: 2.5rem; margin-bottom: 1rem;">Are You Hiring Top Engineering Talent?</h2>
+        <p style="color: #DBEAFE; font-size: 1.15rem; margin-bottom: 2rem;">
+          Connect with 500,000+ vetted job seekers. Post your job openings in minutes and manage applicants through our streamlined dashboard.
+        </p>
+        <div class="flex items-center justify-center gap-3 flex-wrap">
+          <a href="post-job.html" class="btn btn-secondary btn-lg" style="background-color: #FFFFFF; color: var(--primary); font-weight: 700;">
+            <i data-lucide="plus-circle" class="icon-sm"></i> Post a Job Now
+          </a>
+          <a href="employer-dashboard.html" class="btn btn-outline btn-lg" style="color: #FFFFFF; border-color: #FFFFFF;">
+            Explore Employer Dashboard
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo" style="color: #FFFFFF;">
+            <div class="brand-icon-box">
+              <i data-lucide="briefcase" class="icon-md"></i>
+            </div>
+            Job<span style="color: #60A5FA;">Nest</span>
+          </a>
+          <p>
+            JobNest is a next-generation career portal connecting talented professionals with top tech companies, consulting leaders, and global enterprises.
+          </p>
+          <div class="flex gap-2 mt-3">
+            <span class="badge" style="background-color: #1E293B; color: #94A3B8;">HTML5</span>
+            <span class="badge" style="background-color: #1E293B; color: #94A3B8;">CSS3</span>
+            <span class="badge" style="background-color: #1E293B; color: #94A3B8;">Vanilla JS</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">For Job Seekers</h4>
+          <div class="footer-links-list">
+            <a href="jobs.html" class="footer-link">Browse All Jobs</a>
+            <a href="jobs.html?mode=Remote" class="footer-link">Remote Work Jobs</a>
+            <a href="companies.html" class="footer-link">Explore Companies</a>
+            <a href="seeker-dashboard.html" class="footer-link">Candidate Dashboard</a>
+            <a href="saved-jobs.html" class="footer-link">Saved Bookmarks</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">For Employers</h4>
+          <div class="footer-links-list">
+            <a href="post-job.html" class="footer-link">Post a New Job</a>
+            <a href="employer-dashboard.html" class="footer-link">Employer Dashboard</a>
+            <a href="employer-dashboard.html#applicants-tab" class="footer-link">Candidate Tracking</a>
+            <a href="register.html?role=employer" class="footer-link">Register Company</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Connect & Support</h4>
+          <div class="footer-contact-info">
+            <div class="footer-contact-item">
+              <i data-lucide="map-pin" class="icon-xs"></i>
+              <span>Tech Hub Park, Bengaluru, India</span>
+            </div>
+            <div class="footer-contact-item">
+              <i data-lucide="mail" class="icon-xs"></i>
+              <span>support@jobnest-portal.demo</span>
+            </div>
+            <div class="footer-contact-item">
+              <i data-lucide="phone" class="icon-xs"></i>
+              <span>+91 1800-JOB-NEST</span>
+            </div>
+            <div class="mt-2">
+              <button class="btn btn-secondary btn-sm btn-reset-demo-data" type="button">
+                <i data-lucide="rotate-ccw" class="icon-xs mr-1"></i> Reset Demo Data
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 JobNest Portal. Built with pure HTML5, CSS3 & ES6+ Vanilla JavaScript.
+        </div>
+        <div class="flex gap-3">
+          <a href="about.html">About Platform</a>
+          <a href="contact.html">Help & Support</a>
+          <a href="login.html">Demo Login</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Inline script for Home Page dynamic sections -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Render Featured Jobs
+      const featuredContainer = document.getElementById("homeFeaturedJobsContainer");
+      if (featuredContainer) {
+        const allJobs = Storage.getJobs();
+        const featured = allJobs.filter(j => j.featured).slice(0, 6);
+        const currentUser = Auth.getCurrentUser();
+        const isSeeker = Boolean(currentUser && currentUser.role === "seeker");
+
+        if (featured.length === 0) {
+          featuredContainer.innerHTML = `<p class="text-muted text-center" style="grid-column: 1 / -1;">No featured jobs listed at the moment.</p>`;
+        } else {
+          featuredContainer.innerHTML = featured.map(job => {
+            const isSaved = isSeeker && Storage.isJobSaved(currentUser.id, job.id);
+            const hasApplied = isSeeker && Storage.hasSeekerApplied(currentUser.id, job.id);
+            const skills = Array.isArray(job.skills) ? job.skills.slice(0, 4) : [];
+            const timeAgo = App.getTimeAgo(job.postedDate);
+
+            return `
+              <article class="job-card">
+                <div>
+                  <div class="job-card-header">
+                    <div class="job-brand-wrap">
+                      <div class="company-logo-badge" style="background-color: ${job.logoBg || '#2563EB'};">
+                        ${Validation.escapeHTML(job.companyLogo || job.companyName.substring(0, 3).toUpperCase())}
+                      </div>
+                      <div>
+                        <span class="job-company-title">${Validation.escapeHTML(job.companyName)}</span>
+                        <a href="job-details.html?id=${encodeURIComponent(job.id)}" class="job-title-link">
+                          ${Validation.escapeHTML(job.title)}
+                        </a>
+                      </div>
+                    </div>
+                    ${isSeeker ? `
+                      <button class="btn-icon-only btn-save-job ${isSaved ? 'active' : ''}" data-job-id="${Validation.escapeHTML(job.id)}" title="Save Job">
+                        <i data-lucide="bookmark" class="icon-sm"></i>
+                      </button>
+                    ` : ''}
+                  </div>
+
+                  <div class="job-meta-list">
+                    <span class="job-meta-item"><i data-lucide="map-pin" class="icon-xs"></i> ${Validation.escapeHTML(job.location)}</span>
+                    <span class="job-meta-item"><i data-lucide="briefcase" class="icon-xs"></i> ${Validation.escapeHTML(job.jobType)}</span>
+                    <span class="job-meta-item"><i data-lucide="building" class="icon-xs"></i> ${Validation.escapeHTML(job.workMode || 'On-site')}</span>
+                  </div>
+
+                  <div class="job-tags-list">
+                    ${skills.map(s => `<span class="skill-tag">${Validation.escapeHTML(s)}</span>`).join("")}
+                  </div>
+                </div>
+
+                <div class="job-card-footer">
+                  <div>
+                    <div class="job-salary-text">${Validation.escapeHTML(job.salaryText || App.formatSalary(job.minSalary, job.maxSalary))}</div>
+                    <div class="job-posted-time">Posted ${timeAgo}</div>
+                  </div>
+                  <div class="job-actions-row">
+                    <a href="job-details.html?id=${encodeURIComponent(job.id)}" class="btn btn-secondary btn-sm">Details</a>
+                    ${hasApplied ? `
+                      <button class="btn btn-secondary btn-sm" disabled><i data-lucide="check" class="icon-xs"></i> Applied</button>
+                    ` : `
+                      <a href="job-details.html?id=${encodeURIComponent(job.id)}#apply" class="btn btn-primary btn-sm">Apply</a>
+                    `}
+                  </div>
+                </div>
+              </article>
+            `;
+          }).join("");
+
+          // Bind save buttons
+          featuredContainer.querySelectorAll(".btn-save-job").forEach(btn => {
+            btn.addEventListener("click", () => {
+              const jId = btn.getAttribute("data-job-id");
+              if (!currentUser) {
+                App.showToast("Please log in to save jobs.", "warning");
+                return;
+              }
+              const saved = Storage.toggleSaveJob(currentUser.id, jId);
+              btn.classList.toggle("active", saved);
+              App.showToast(saved ? "Job saved to your bookmarks!" : "Job removed from bookmarks.", "info");
+            });
+          });
+        }
+      }
+
+      // 2. Render Top Companies
+      const companiesContainer = document.getElementById("homeCompaniesContainer");
+      if (companiesContainer) {
+        const companies = Storage.getCompanies().slice(0, 4);
+        companiesContainer.innerHTML = companies.map(comp => {
+          const jobCount = Storage.getCompanyJobsCount(comp.id);
+          return `
+            <article class="company-card">
+              <div class="company-card-logo" style="background-color: ${comp.logoBg || '#2563EB'};">
+                ${Validation.escapeHTML(comp.logo || comp.name.substring(0, 3).toUpperCase())}
+              </div>
+              <h3 class="company-card-name">${Validation.escapeHTML(comp.name)}</h3>
+              <span class="company-card-industry">${Validation.escapeHTML(comp.industry)}</span>
+              <div class="company-card-location">
+                <i data-lucide="map-pin" class="icon-xs"></i>
+                <span>${Validation.escapeHTML(comp.location)}</span>
+              </div>
+              <div class="company-card-badge">
+                ${jobCount} Active Job${jobCount === 1 ? '' : 's'}
+              </div>
+              <a href="company-details.html?id=${encodeURIComponent(comp.id)}" class="btn btn-outline btn-block mt-auto">
+                View Company
+              </a>
+            </article>
+          `;
+        }).join("");
+      }
+
+      App.initIcons();
+    });
+  </script>
+</body>
+</html>

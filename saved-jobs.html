@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saved Jobs — JobNest</title>
+  <meta name="description" content="View and manage your bookmarked job listings on JobNest.">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Demo Notice Banner -->
+  <div class="demo-banner">
+    <span>💡 <strong>Saved Bookmarks:</strong> Managed live via LocalStorage.</span>
+    <button class="btn-reset-quick btn-reset-demo-data" type="button">Reset Demo Data</button>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+          Job<span>Nest</span>
+        </a>
+
+        <div class="nav-links-desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="jobs.html" class="nav-link">Jobs</a>
+          <a href="companies.html" class="nav-link">Companies</a>
+          <a href="seeker-dashboard.html" class="nav-link">Dashboard</a>
+        </div>
+
+        <div class="nav-actions" id="nav-auth-container"></div>
+
+        <button class="mobile-nav-toggle" id="mobileMenuBtn" aria-label="Open Navigation Menu">
+          <i data-lucide="menu" class="icon-lg"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main style="padding-top: var(--space-2xl); padding-bottom: var(--space-3xl);">
+    <div class="container">
+      
+      <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+        <div>
+          <span class="section-tag">Candidate Bookmarks</span>
+          <h1 class="text-2xl font-bold mt-1">My Saved Jobs</h1>
+          <p class="text-secondary text-sm">Quickly revisit and apply to job opportunities you have bookmarked.</p>
+        </div>
+        <a href="jobs.html" class="btn btn-outline btn-sm">Explore More Jobs</a>
+      </div>
+
+      <div class="jobs-grid" id="savedJobsFullContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container text-center" style="font-size: 0.8125rem; color: #64748B;">
+      © 2026 JobNest Portal. Pure HTML5, CSS3, Vanilla JS.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (!Auth.requireAuth("seeker", "login.html")) return;
+      const user = Auth.getCurrentUser();
+      const container = document.getElementById("savedJobsFullContainer");
+
+      function render() {
+        const savedJobs = Storage.getSavedJobsList(user.id);
+
+        if (savedJobs.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1;">
+              <div class="empty-state-icon">
+                <i data-lucide="bookmark-x" class="icon-xl"></i>
+              </div>
+              <h3 class="empty-state-title">No Saved Jobs Yet</h3>
+              <p class="empty-state-desc">You haven't bookmarked any jobs. Click the bookmark icon on any job card to save it here.</p>
+              <a href="jobs.html" class="btn btn-primary">Discover Openings</a>
+            </div>
+          `;
+          App.initIcons();
+          return;
+        }
+
+        container.innerHTML = savedJobs.map(job => {
+          const hasApplied = Storage.hasSeekerApplied(user.id, job.id);
+          const skills = Array.isArray(job.skills) ? job.skills.slice(0, 4) : [];
+
+          return `
+            <article class="job-card">
+              <div>
+                <div class="job-card-header">
+                  <div class="job-brand-wrap">
+                    <div class="company-logo-badge" style="background-color: ${job.logoBg || '#2563EB'};">
+                      ${Validation.escapeHTML(job.companyLogo || job.companyName.substring(0, 3).toUpperCase())}
+                    </div>
+                    <div>
+                      <span class="job-company-title">${Validation.escapeHTML(job.companyName)}</span>
+                      <a href="job-details.html?id=${encodeURIComponent(job.id)}" class="job-title-link">
+                        ${Validation.escapeHTML(job.title)}
+                      </a>
+                    </div>
+                  </div>
+                  <button class="btn-icon-only active btn-remove-bookmark" data-job-id="${Validation.escapeHTML(job.id)}" title="Remove Bookmark">
+                    <i data-lucide="bookmark-x" class="icon-sm"></i>
+                  </button>
+                </div>
+
+                <div class="job-meta-list">
+                  <span class="job-meta-item"><i data-lucide="map-pin" class="icon-xs"></i> ${Validation.escapeHTML(job.location)}</span>
+                  <span class="job-meta-item"><i data-lucide="briefcase" class="icon-xs"></i> ${Validation.escapeHTML(job.jobType)}</span>
+                  <span class="job-meta-item"><i data-lucide="building" class="icon-xs"></i> ${Validation.escapeHTML(job.workMode || 'On-site')}</span>
+                </div>
+
+                <div class="job-tags-list">
+                  ${skills.map(s => `<span class="skill-tag">${Validation.escapeHTML(s)}</span>`).join("")}
+                </div>
+              </div>
+
+              <div class="job-card-footer">
+                <div>
+                  <div class="job-salary-text">${Validation.escapeHTML(job.salaryText || App.formatSalary(job.minSalary, job.maxSalary))}</div>
+                </div>
+                <div class="job-actions-row">
+                  <a href="job-details.html?id=${encodeURIComponent(job.id)}" class="btn btn-secondary btn-sm">Details</a>
+                  ${hasApplied ? `
+                    <button class="btn btn-secondary btn-sm" disabled><i data-lucide="check" class="icon-xs"></i> Applied</button>
+                  ` : `
+                    <a href="job-details.html?id=${encodeURIComponent(job.id)}#apply" class="btn btn-primary btn-sm">Apply Now</a>
+                  `}
+                </div>
+              </div>
+            </article>
+          `;
+        }).join("");
+
+        App.initIcons();
+
+        container.querySelectorAll(".btn-remove-bookmark").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const jId = btn.getAttribute("data-job-id");
+            Storage.toggleSaveJob(user.id, jId);
+            App.showToast("Job removed from bookmarks.", "info");
+            render();
+          });
+        });
+      }
+
+      render();
+    });
+  </script>
+</body>
+</html>

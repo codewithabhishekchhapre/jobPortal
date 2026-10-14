@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Profile — JobNest</title>
+  <meta name="description" content="View company profile, culture, headquarters, and active job openings on JobNest.">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Demo Notice Banner -->
+  <div class="demo-banner">
+    <span>💡 <strong>Frontend Demo:</strong> Dynamic company profile loaded via <code>?id=...</code> query parameter.</span>
+    <button class="btn-reset-quick btn-reset-demo-data" type="button">Reset Demo Data</button>
+  </div>
+
+  <!-- Header & Navbar -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+          Job<span>Nest</span>
+        </a>
+
+        <div class="nav-links-desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="jobs.html" class="nav-link">Jobs</a>
+          <a href="companies.html" class="nav-link active">Companies</a>
+          <a href="about.html" class="nav-link">About Us</a>
+          <a href="contact.html" class="nav-link">Contact Us</a>
+        </div>
+
+        <div class="nav-actions" id="nav-auth-container"></div>
+
+        <button class="mobile-nav-toggle" id="mobileMenuBtn" aria-label="Open Navigation Menu">
+          <i data-lucide="menu" class="icon-lg"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer-overlay" id="mobileNavOverlay"></div>
+  <div class="mobile-drawer" id="mobileNavDrawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+    <div class="mobile-drawer-header">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+        Job<span>Nest</span>
+      </a>
+      <button class="mobile-drawer-close" id="mobileNavCloseBtn" aria-label="Close Navigation Menu">&times;</button>
+    </div>
+    <div class="mobile-drawer-body">
+      <div id="mobile-nav-auth-container"></div>
+      <div class="mobile-nav-links">
+        <a href="index.html" class="mobile-nav-link"><i data-lucide="home" class="icon-sm"></i> Home</a>
+        <a href="jobs.html" class="mobile-nav-link"><i data-lucide="briefcase" class="icon-sm"></i> Jobs</a>
+        <a href="companies.html" class="mobile-nav-link active"><i data-lucide="building-2" class="icon-sm"></i> Companies</a>
+        <a href="about.html" class="mobile-nav-link"><i data-lucide="info" class="icon-sm"></i> About Us</a>
+        <a href="contact.html" class="mobile-nav-link"><i data-lucide="mail" class="icon-sm"></i> Contact Us</a>
+      </div>
+    </div>
+  </div>
+
+  <main style="padding-top: var(--space-2xl); padding-bottom: var(--space-3xl);">
+    <div class="container">
+      
+      <!-- Back Link -->
+      <div class="mb-4">
+        <a href="companies.html" class="btn btn-ghost btn-sm" style="padding-left: 0;">
+          <i data-lucide="arrow-left" class="icon-sm mr-1"></i> Back to All Companies
+        </a>
+      </div>
+
+      <!-- Company Profile Banner Card -->
+      <div class="card mb-4" style="padding: var(--space-xl);">
+        <div class="flex items-start justify-between flex-wrap gap-4">
+          <div class="flex items-start gap-4">
+            <div id="companyDetailLogo" class="company-logo-badge" style="width: 72px; height: 72px; font-size: 1.5rem; border-radius: var(--radius-lg);">
+              COMP
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h1 id="companyDetailName" class="text-2xl font-bold">Company Name</h1>
+                <span class="badge badge-success" title="Verified Employer on JobNest">
+                  <i data-lucide="check" class="icon-xs"></i> Verified
+                </span>
+              </div>
+              <p id="companyDetailIndustry" class="text-secondary font-medium mt-1">Industry</p>
+
+              <div class="job-meta-list mt-2">
+                <span class="job-meta-item"><i data-lucide="map-pin" class="icon-sm"></i> <span id="companyDetailLocation">Location</span></span>
+                <span class="job-meta-item"><i data-lucide="users" class="icon-sm"></i> <span id="companyDetailSize">Size</span></span>
+                <span class="job-meta-item"><i data-lucide="calendar" class="icon-sm"></i> <span id="companyDetailFounded">Founded</span></span>
+                <span class="job-meta-item"><i data-lucide="globe" class="icon-sm"></i> <a id="companyDetailWebsite" href="#" target="_blank" rel="noopener">Website</a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-4" style="border-top: 1px solid var(--border-color);">
+          <h3 class="text-base font-bold mb-2">About Company</h3>
+          <p id="companyDetailDesc" class="text-secondary" style="line-height: 1.7; font-size: 0.95rem;">
+            Company description loading...
+          </p>
+        </div>
+      </div>
+
+      <!-- Active Job Openings Section -->
+      <div class="mt-5">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="section-title" style="font-size: 1.5rem; margin-bottom: 0;">
+            Active Job Openings <span id="companyJobsCount" class="text-secondary text-sm font-normal"></span>
+          </h2>
+          <a href="jobs.html" class="btn btn-outline btn-sm">Explore All Jobs</a>
+        </div>
+
+        <div id="companyJobsContainer">
+          <!-- Jobs rendered by companies.js -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo" style="color: #FFFFFF;">
+            <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+            Job<span style="color: #60A5FA;">Nest</span>
+          </a>
+          <p>Connecting candidates with enterprise employers across India.</p>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Navigation</h4>
+          <div class="footer-links-list">
+            <a href="index.html" class="footer-link">Home</a>
+            <a href="jobs.html" class="footer-link">All Jobs</a>
+            <a href="companies.html" class="footer-link">Companies</a>
+            <a href="about.html" class="footer-link">About Us</a>
+            <a href="contact.html" class="footer-link">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Seeker Services</h4>
+          <div class="footer-links-list">
+            <a href="seeker-dashboard.html" class="footer-link">Candidate Profile</a>
+            <a href="applications.html" class="footer-link">Application History</a>
+            <a href="saved-jobs.html" class="footer-link">Saved Jobs</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Actions</h4>
+          <div class="footer-links-list">
+            <a href="post-job.html" class="footer-link">Post a Job</a>
+            <a href="employer-dashboard.html" class="footer-link">Recruiter Dashboard</a>
+            <button class="btn btn-secondary btn-sm btn-reset-demo-data mt-2" type="button">Reset Demo Data</button>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 JobNest Portal. Pure HTML5, CSS3, Vanilla JS.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/companies.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      CompaniesController.initDetails();
+    });
+  </script>
+</body>
+</html>

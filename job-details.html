@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Details — JobNest</title>
+  <meta name="description" content="View complete job specifications, responsibilities, qualifications, company info, and submit your application on JobNest.">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Demo Notice Banner -->
+  <div class="demo-banner">
+    <span>💡 <strong>Frontend Demo:</strong> Single-page parameters loaded via <code>?id=...</code> query string.</span>
+    <button class="btn-reset-quick btn-reset-demo-data" type="button">Reset Demo Data</button>
+  </div>
+
+  <!-- Header & Navbar -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+          Job<span>Nest</span>
+        </a>
+
+        <div class="nav-links-desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="jobs.html" class="nav-link active">Jobs</a>
+          <a href="companies.html" class="nav-link">Companies</a>
+          <a href="about.html" class="nav-link">About Us</a>
+          <a href="contact.html" class="nav-link">Contact Us</a>
+        </div>
+
+        <div class="nav-actions" id="nav-auth-container"></div>
+
+        <button class="mobile-nav-toggle" id="mobileMenuBtn" aria-label="Open Navigation Menu">
+          <i data-lucide="menu" class="icon-lg"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-drawer-overlay" id="mobileNavOverlay"></div>
+  <div class="mobile-drawer" id="mobileNavDrawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+    <div class="mobile-drawer-header">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+        Job<span>Nest</span>
+      </a>
+      <button class="mobile-drawer-close" id="mobileNavCloseBtn" aria-label="Close Navigation Menu">&times;</button>
+    </div>
+    <div class="mobile-drawer-body">
+      <div id="mobile-nav-auth-container"></div>
+      <div class="mobile-nav-links">
+        <a href="index.html" class="mobile-nav-link"><i data-lucide="home" class="icon-sm"></i> Home</a>
+        <a href="jobs.html" class="mobile-nav-link active"><i data-lucide="briefcase" class="icon-sm"></i> Jobs</a>
+        <a href="companies.html" class="mobile-nav-link"><i data-lucide="building-2" class="icon-sm"></i> Companies</a>
+        <a href="about.html" class="mobile-nav-link"><i data-lucide="info" class="icon-sm"></i> About Us</a>
+        <a href="contact.html" class="mobile-nav-link"><i data-lucide="mail" class="icon-sm"></i> Contact Us</a>
+      </div>
+    </div>
+  </div>
+
+  <main style="padding-top: var(--space-2xl); padding-bottom: var(--space-3xl);">
+    <div class="container">
+      
+      <!-- Back Navigation Breadcrumb -->
+      <div class="mb-4">
+        <a href="jobs.html" class="btn btn-ghost btn-sm" style="padding-left: 0;">
+          <i data-lucide="arrow-left" class="icon-sm mr-1"></i> Back to all listings
+        </a>
+      </div>
+
+      <!-- Job Hero Header Card -->
+      <div class="card mb-4" style="padding: var(--space-xl);">
+        <div class="flex items-start justify-between flex-wrap gap-4">
+          <div class="flex items-start gap-4">
+            <div id="detailCompanyLogo" class="company-logo-badge" style="width: 68px; height: 68px; font-size: 1.35rem; border-radius: var(--radius-lg);">
+              JOB
+            </div>
+            <div>
+              <span id="detailCompanyName" class="font-semibold text-secondary text-base">Company Name</span>
+              <h1 id="detailJobTitle" class="text-2xl font-bold mt-1" style="font-size: 2rem;">Loading Job Title...</h1>
+              
+              <div class="job-meta-list mt-2">
+                <span class="job-meta-item"><i data-lucide="map-pin" class="icon-sm"></i> <span id="detailLocation">Location</span></span>
+                <span class="job-meta-item"><i data-lucide="briefcase" class="icon-sm"></i> <span id="detailJobType">Full-Time</span></span>
+                <span class="job-meta-item"><i data-lucide="building" class="icon-sm"></i> <span id="detailWorkMode">Hybrid</span></span>
+                <span class="job-meta-item"><i data-lucide="clock" class="icon-sm"></i> Posted <span id="detailPostedDate">Recently</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center gap-2 flex-wrap" id="detailActionButtons">
+            <button class="btn btn-outline" id="detailSaveJobBtn">
+              <i data-lucide="bookmark" class="icon-sm"></i> Save Job
+            </button>
+            <button class="btn btn-primary btn-lg" id="detailApplyNowBtn">
+              <i data-lucide="send" class="icon-sm"></i> Apply Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Job Grid: Details + Sidebar Info -->
+      <div class="grid" style="grid-template-columns: 2fr 1fr; gap: var(--space-xl); align-items: start;">
+        
+        <!-- Left: Full Job Specifications -->
+        <div>
+          <!-- Job Description -->
+          <div class="card mb-4" style="padding: var(--space-xl);">
+            <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+              <i data-lucide="file-text" class="icon-sm text-primary"></i> Job Overview
+            </h3>
+            <p id="detailDescription" class="text-secondary" style="line-height: 1.7; font-size: 0.95rem; white-space: pre-line;">
+              Loading job description...
+            </p>
+          </div>
+
+          <!-- Responsibilities -->
+          <div class="card mb-4" style="padding: var(--space-xl);">
+            <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+              <i data-lucide="check-circle" class="icon-sm text-primary"></i> Key Responsibilities
+            </h3>
+            <ul id="detailResponsibilities" class="footer-links-list" style="gap: 0.75rem;">
+              <!-- Injected dynamically -->
+            </ul>
+          </div>
+
+          <!-- Qualifications -->
+          <div class="card mb-4" style="padding: var(--space-xl);">
+            <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+              <i data-lucide="graduation-cap" class="icon-sm text-primary"></i> Required Qualifications & Experience
+            </h3>
+            <ul id="detailQualifications" class="footer-links-list" style="gap: 0.75rem;">
+              <!-- Injected dynamically -->
+            </ul>
+          </div>
+
+          <!-- Benefits -->
+          <div class="card mb-4" style="padding: var(--space-xl);">
+            <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+              <i data-lucide="gift" class="icon-sm text-primary"></i> Benefits & Perks
+            </h3>
+            <ul id="detailBenefits" class="footer-links-list" style="gap: 0.75rem;">
+              <!-- Injected dynamically -->
+            </ul>
+          </div>
+
+          <!-- Similar Jobs Section -->
+          <div class="mt-5">
+            <h3 class="text-xl font-bold mb-3">Similar Job Openings</h3>
+            <div class="jobs-grid" id="similarJobsContainer">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Sidebar: Quick Facts & Company Snapshot -->
+        <aside>
+          <!-- Quick Job Summary Card -->
+          <div class="card mb-4" style="padding: var(--space-lg);">
+            <h3 class="text-base font-bold mb-3 pb-2" style="border-bottom: 1px solid var(--border-color);">
+              Job Overview
+            </h3>
+            <div class="footer-contact-info" style="gap: 1rem;">
+              <div>
+                <span class="text-xs text-muted block">Offered Salary:</span>
+                <span id="detailSalary" class="font-bold text-primary text-base">₹0</span>
+              </div>
+              <div>
+                <span class="text-xs text-muted block">Experience Level:</span>
+                <span id="detailExperience" class="font-semibold text-main">Entry</span>
+              </div>
+              <div>
+                <span class="text-xs text-muted block">Work Mode:</span>
+                <span id="detailWorkModeSummary" class="font-semibold text-main">Hybrid</span>
+              </div>
+              <div>
+                <span class="text-xs text-muted block">Application Deadline:</span>
+                <span id="detailDeadline" class="font-semibold text-main">Rolling basis</span>
+              </div>
+            </div>
+
+            <!-- Required Skills Tag Box -->
+            <div class="mt-4 pt-3" style="border-top: 1px solid var(--border-color);">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-muted mb-2">Required Skills</h4>
+              <div id="detailSkillsContainer" class="job-tags-list" style="margin-bottom: 0;">
+                <!-- Skills tags -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Company Overview Card -->
+          <div class="card" style="padding: var(--space-lg);">
+            <h3 class="text-base font-bold mb-3 pb-2" style="border-bottom: 1px solid var(--border-color);">
+              About the Company
+            </h3>
+            <div class="flex items-center gap-3 mb-3">
+              <div id="companyBoxLogo" class="company-logo-badge" style="width: 44px; height: 44px;">COMP</div>
+              <div>
+                <h4 id="companyBoxName" class="font-bold text-main">Company</h4>
+                <span id="companyBoxIndustry" class="text-xs text-secondary">Industry</span>
+              </div>
+            </div>
+            <p id="companyBoxDesc" class="text-xs text-secondary mb-3" style="line-height: 1.6;">
+              Leading organization in tech innovation.
+            </p>
+            <a id="companyBoxLink" href="companies.html" class="btn btn-outline btn-sm btn-block">
+              View Company Profile & All Jobs
+            </a>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Apply Modal Dialog -->
+  <div class="modal-backdrop" id="applyModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="applyModalJobTitle">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <span class="text-xs text-primary font-bold uppercase tracking-wider">Job Application</span>
+          <h3 class="modal-title" id="applyModalJobTitle">Apply for Job</h3>
+          <span class="text-xs text-muted" id="applyModalCompanyName">Company Name</span>
+        </div>
+        <button class="modal-close-btn" id="closeApplyModalBtn" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <form id="jobApplicationForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="applyFullName">Full Name <span class="required">*</span></label>
+            <input type="text" id="applyFullName" class="form-control" required placeholder="Enter your full name">
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="applyEmail">Email Address <span class="required">*</span></label>
+              <input type="email" id="applyEmail" class="form-control" required placeholder="name@example.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="applyPhone">Mobile Number <span class="required">*</span></label>
+              <input type="tel" id="applyPhone" class="form-control" required placeholder="+91 9876543210">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Resume / CV</label>
+            <div id="applyResumeInfo" class="mb-2"></div>
+            <label class="form-label text-xs text-secondary" for="applyResumeFile">Attach or replace resume:</label>
+            <input type="file" id="applyResumeFile" class="form-control" accept=".pdf,.doc,.docx" style="font-size: 0.8125rem;">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="applyCoverNote">Cover Note / Message to Recruiter</label>
+            <textarea id="applyCoverNote" class="form-textarea" placeholder="Briefly highlight why you're a great fit for this position..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelApplyModalBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="submitApplyBtn">
+            <i data-lucide="send" class="icon-sm"></i> Submit Application
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo" style="color: #FFFFFF;">
+            <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+            Job<span style="color: #60A5FA;">Nest</span>
+          </a>
+          <p>Connecting candidates with enterprise employers across India.</p>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Navigation</h4>
+          <div class="footer-links-list">
+            <a href="index.html" class="footer-link">Home</a>
+            <a href="jobs.html" class="footer-link">All Jobs</a>
+            <a href="companies.html" class="footer-link">Companies</a>
+            <a href="about.html" class="footer-link">About Us</a>
+            <a href="contact.html" class="footer-link">Contact</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Seeker Services</h4>
+          <div class="footer-links-list">
+            <a href="seeker-dashboard.html" class="footer-link">Candidate Profile</a>
+            <a href="applications.html" class="footer-link">Application History</a>
+            <a href="saved-jobs.html" class="footer-link">Saved Jobs</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Actions</h4>
+          <div class="footer-links-list">
+            <a href="post-job.html" class="footer-link">Post a Job</a>
+            <a href="employer-dashboard.html" class="footer-link">Recruiter Dashboard</a>
+            <button class="btn btn-secondary btn-sm btn-reset-demo-data mt-2" type="button">Reset Demo Data</button>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 JobNest Portal. Pure HTML5, CSS3, Vanilla JS.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Job Details Controller Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const jobId = params.get("id") || "job-1";
+      const job = Storage.getJobById(jobId) || Storage.getJobs()[0];
+
+      if (!job) {
+        alert("Job not found.");
+        window.location.href = "jobs.html";
+        return;
+      }
+
+      document.title = `${job.title} at ${job.companyName} — JobNest`;
+
+      // Fill Header
+      document.getElementById("detailJobTitle").textContent = job.title;
+      document.getElementById("detailCompanyName").textContent = job.companyName;
+      document.getElementById("detailLocation").textContent = job.location;
+      document.getElementById("detailJobType").textContent = job.jobType;
+      document.getElementById("detailWorkMode").textContent = job.workMode || "On-site";
+      document.getElementById("detailPostedDate").textContent = App.getTimeAgo(job.postedDate);
+
+      const logoBadge = document.getElementById("detailCompanyLogo");
+      logoBadge.textContent = job.companyLogo || job.companyName.substring(0, 3).toUpperCase();
+      logoBadge.style.backgroundColor = job.logoBg || "#2563EB";
+
+      // Fill Specifications
+      document.getElementById("detailDescription").textContent = job.description;
+
+      const respList = document.getElementById("detailResponsibilities");
+      respList.innerHTML = (job.responsibilities || []).map(r => `
+        <li class="flex items-start gap-2 text-sm text-secondary">
+          <i data-lucide="check" class="icon-xs text-primary" style="margin-top: 3px; flex-shrink: 0;"></i>
+          <span>${Validation.escapeHTML(r)}</span>
+        </li>
+      `).join("");
+
+      const qualList = document.getElementById("detailQualifications");
+      qualList.innerHTML = (job.qualifications || []).map(q => `
+        <li class="flex items-start gap-2 text-sm text-secondary">
+          <i data-lucide="arrow-right" class="icon-xs text-primary" style="margin-top: 3px; flex-shrink: 0;"></i>
+          <span>${Validation.escapeHTML(q)}</span>
+        </li>
+      `).join("");
+
+      const benList = document.getElementById("detailBenefits");
+      benList.innerHTML = (job.benefits || []).map(b => `
+        <li class="flex items-start gap-2 text-sm text-secondary">
+          <i data-lucide="star" class="icon-xs text-warning" style="margin-top: 3px; flex-shrink: 0;"></i>
+          <span>${Validation.escapeHTML(b)}</span>
+        </li>
+      `).join("");
+
+      // Fill Sidebar
+      document.getElementById("detailSalary").textContent = job.salaryText || App.formatSalary(job.minSalary, job.maxSalary);
+      document.getElementById("detailExperience").textContent = job.experienceLevel || "All Levels";
+      document.getElementById("detailWorkModeSummary").textContent = job.workMode || "On-site";
+      document.getElementById("detailDeadline").textContent = job.deadline || "Rolling Applications";
+
+      const skillsContainer = document.getElementById("detailSkillsContainer");
+      skillsContainer.innerHTML = (job.skills || []).map(s => `
+        <span class="skill-tag">${Validation.escapeHTML(s)}</span>
+      `).join("");
+
+      // Fill Company Card
+      const company = Storage.getCompanyById(job.companyId);
+      if (company) {
+        document.getElementById("companyBoxName").textContent = company.name;
+        document.getElementById("companyBoxIndustry").textContent = company.industry;
+        document.getElementById("companyBoxDesc").textContent = company.description ? company.description.substring(0, 160) + "..." : "";
+        document.getElementById("companyBoxLogo").textContent = company.logo || company.name.substring(0, 3).toUpperCase();
+        document.getElementById("companyBoxLogo").style.backgroundColor = company.logoBg || "#2563EB";
+        document.getElementById("companyBoxLink").href = `company-details.html?id=${encodeURIComponent(company.id)}`;
+      }
+
+      // Check Saved State
+      const currentUser = Auth.getCurrentUser();
+      const isSeeker = Boolean(currentUser && currentUser.role === "seeker");
+      const saveBtn = document.getElementById("detailSaveJobBtn");
+
+      if (saveBtn) {
+        if (isSeeker && Storage.isJobSaved(currentUser.id, job.id)) {
+          saveBtn.classList.add("active");
+          saveBtn.innerHTML = `<i data-lucide="bookmark-check" class="icon-sm"></i> Saved`;
+        }
+
+        saveBtn.addEventListener("click", () => {
+          if (!currentUser) {
+            App.showToast("Please log in to save jobs.", "warning");
+            return;
+          }
+          const saved = Storage.toggleSaveJob(currentUser.id, job.id);
+          saveBtn.classList.toggle("active", saved);
+          saveBtn.innerHTML = saved 
+            ? `<i data-lucide="bookmark-check" class="icon-sm"></i> Saved` 
+            : `<i data-lucide="bookmark" class="icon-sm"></i> Save Job`;
+          App.initIcons();
+          App.showToast(saved ? "Job saved to your bookmarks!" : "Job removed from bookmarks.", "info");
+        });
+      }
+
+      // Check Apply State
+      const applyBtn = document.getElementById("detailApplyNowBtn");
+      const hasApplied = isSeeker && Storage.hasSeekerApplied(currentUser.id, job.id);
+
+      if (hasApplied && applyBtn) {
+        applyBtn.disabled = true;
+        applyBtn.classList.remove("btn-primary");
+        applyBtn.classList.add("btn-secondary");
+        applyBtn.innerHTML = `<i data-lucide="check" class="icon-sm"></i> Applied Already`;
+      } else if (applyBtn) {
+        applyBtn.addEventListener("click", () => {
+          openApplyModalForThisJob();
+        });
+      }
+
+      // Auto-trigger apply modal if URL hash is #apply
+      if (window.location.hash === "#apply" && !hasApplied) {
+        setTimeout(openApplyModalForThisJob, 400);
+      }
+
+      // Similar Jobs
+      const similarJobs = Storage.getJobs()
+        .filter(j => j.id !== job.id && (j.category === job.category || j.companyId === job.companyId))
+        .slice(0, 2);
+
+      const similarContainer = document.getElementById("similarJobsContainer");
+      if (similarJobs.length === 0) {
+        similarContainer.innerHTML = `<p class="text-xs text-muted">No similar jobs found right now.</p>`;
+      } else {
+        similarContainer.innerHTML = similarJobs.map(sj => `
+          <article class="job-card">
+            <div class="job-card-header">
+              <div class="job-brand-wrap">
+                <div class="company-logo-badge" style="background-color: ${sj.logoBg || '#2563EB'};">
+                  ${Validation.escapeHTML(sj.companyLogo || sj.companyName.substring(0, 3).toUpperCase())}
+                </div>
+                <div>
+                  <span class="job-company-title">${Validation.escapeHTML(sj.companyName)}</span>
+                  <a href="job-details.html?id=${encodeURIComponent(sj.id)}" class="job-title-link">
+                    ${Validation.escapeHTML(sj.title)}
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="job-meta-list">
+              <span class="job-meta-item"><i data-lucide="map-pin" class="icon-xs"></i> ${Validation.escapeHTML(sj.location)}</span>
+              <span class="job-meta-item"><i data-lucide="briefcase" class="icon-xs"></i> ${Validation.escapeHTML(sj.jobType)}</span>
+            </div>
+            <div class="job-card-footer">
+              <div class="job-salary-text">${Validation.escapeHTML(sj.salaryText || App.formatSalary(sj.minSalary, sj.maxSalary))}</div>
+              <a href="job-details.html?id=${encodeURIComponent(sj.id)}" class="btn btn-secondary btn-sm">View Details</a>
+            </div>
+          </article>
+        `).join("");
+      }
+
+      // Setup Apply Modal
+      const modal = document.getElementById("applyModalBackdrop");
+      const closeBtn = document.getElementById("closeApplyModalBtn");
+      const cancelBtn = document.getElementById("cancelApplyModalBtn");
+      const form = document.getElementById("jobApplicationForm");
+
+      const closeModal = () => modal.classList.remove("show");
+      if (closeBtn) closeBtn.addEventListener("click", closeModal);
+      if (cancelBtn) cancelBtn.addEventListener("click", closeModal);
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      function openApplyModalForThisJob() {
+        if (!currentUser) {
+          App.showToast("Please log in to apply for this job.", "warning");
+          setTimeout(() => {
+            window.location.href = `login.html?returnUrl=${encodeURIComponent('job-details.html?id=' + job.id)}`;
+          }, 1200);
+          return;
+        }
+
+        if (currentUser.role === "employer") {
+          App.showToast("Employers cannot apply for jobs. Please log in with a Job Seeker account.", "warning");
+          return;
+        }
+
+        if (Storage.hasSeekerApplied(currentUser.id, job.id)) {
+          App.showToast("You have already applied for this position.", "info");
+          return;
+        }
+
+        document.getElementById("applyModalJobTitle").textContent = job.title;
+        document.getElementById("applyModalCompanyName").textContent = job.companyName;
+
+        document.getElementById("applyFullName").value = currentUser.name || "";
+        document.getElementById("applyEmail").value = currentUser.email || "";
+        document.getElementById("applyPhone").value = currentUser.phone || "";
+
+        const resumeStatus = document.getElementById("applyResumeInfo");
+        if (currentUser.resume && currentUser.resume.fileName) {
+          resumeStatus.innerHTML = `
+            <div class="resume-info">
+              <i data-lucide="file-check" class="icon-sm text-success"></i>
+              <span>Using profile resume: <strong>${Validation.escapeHTML(currentUser.resume.fileName)}</strong></span>
+            </div>
+          `;
+        } else {
+          resumeStatus.innerHTML = `<span class="text-xs text-muted">No resume uploaded to profile. You can attach one below.</span>`;
+        }
+
+        modal.classList.add("show");
+        App.initIcons();
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        Validation.clearAllErrors(form);
+
+        const nameInput = document.getElementById("applyFullName");
+        const emailInput = document.getElementById("applyEmail");
+        const phoneInput = document.getElementById("applyPhone");
+        const noteInput = document.getElementById("applyCoverNote");
+        const resumeFileInput = document.getElementById("applyResumeFile");
+
+        let isValid = true;
+        if (!nameInput.value.trim()) {
+          Validation.showError(nameInput, "Please enter your full name.");
+          isValid = false;
+        }
+        if (!Validation.isValidEmail(emailInput.value)) {
+          Validation.showError(emailInput, "Please enter a valid email address.");
+          isValid = false;
+        }
+        if (!Validation.isValidPhone(phoneInput.value)) {
+          Validation.showError(phoneInput, "Please enter a valid mobile number.");
+          isValid = false;
+        }
+
+        if (!isValid) return;
+
+        let resumeName = (currentUser.resume && currentUser.resume.fileName) ? currentUser.resume.fileName : "Aarav_Sharma_Resume.pdf";
+        if (resumeFileInput && resumeFileInput.files && resumeFileInput.files.length > 0) {
+          resumeName = resumeFileInput.files[0].name;
+        }
+
+        Storage.createApplication({
+          jobId: job.id,
+          jobTitle: job.title,
+          companyName: job.companyName,
+          companyLogo: job.companyLogo,
+          logoBg: job.logoBg,
+          location: job.location,
+          seekerId: currentUser.id,
+          applicantName: nameInput.value.trim(),
+          applicantEmail: emailInput.value.trim(),
+          applicantPhone: phoneInput.value.trim(),
+          coverNote: noteInput ? noteInput.value.trim() : "",
+          resumeName: resumeName,
+          employerId: job.employerId || "emp-1",
+          status: "Applied"
+        });
+
+        closeModal();
+        App.showToast("Your job application has been submitted successfully!", "success");
+
+        // Update button
+        if (applyBtn) {
+          applyBtn.disabled = true;
+          applyBtn.classList.remove("btn-primary");
+          applyBtn.classList.add("btn-secondary");
+          applyBtn.innerHTML = `<i data-lucide="check" class="icon-sm"></i> Applied Already`;
+          App.initIcons();
+        }
+      });
+
+      App.initIcons();
+    });
+  </script>
+</body>
+</html>

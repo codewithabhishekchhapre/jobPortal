@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employer Dashboard — JobNest</title>
+  <meta name="description" content="Manage your company's active job postings, evaluate candidate applications, and hire talent on JobNest.">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Demo Notice Banner -->
+  <div class="demo-banner">
+    <span>💡 <strong>Employer Portal:</strong> Create, edit, and delete job postings. Review and update applicant statuses in real-time.</span>
+    <button class="btn-reset-quick btn-reset-demo-data" type="button">Reset Demo Data</button>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+          Job<span>Nest</span>
+        </a>
+
+        <div class="nav-links-desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="jobs.html" class="nav-link">Jobs</a>
+          <a href="companies.html" class="nav-link">Companies</a>
+          <a href="employer-dashboard.html" class="nav-link active">Employer Dashboard</a>
+        </div>
+
+        <div class="nav-actions" id="nav-auth-container"></div>
+
+        <button class="mobile-nav-toggle" id="mobileMenuBtn" aria-label="Open Navigation Menu">
+          <i data-lucide="menu" class="icon-lg"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer-overlay" id="mobileNavOverlay"></div>
+  <div class="mobile-drawer" id="mobileNavDrawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+    <div class="mobile-drawer-header">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+        Job<span>Nest</span>
+      </a>
+      <button class="mobile-drawer-close" id="mobileNavCloseBtn" aria-label="Close Navigation Menu">&times;</button>
+    </div>
+    <div class="mobile-drawer-body">
+      <div id="mobile-nav-auth-container"></div>
+      <div class="mobile-nav-links">
+        <a href="index.html" class="mobile-nav-link"><i data-lucide="home" class="icon-sm"></i> Home</a>
+        <a href="jobs.html" class="mobile-nav-link"><i data-lucide="briefcase" class="icon-sm"></i> Jobs</a>
+        <a href="companies.html" class="mobile-nav-link"><i data-lucide="building-2" class="icon-sm"></i> Companies</a>
+        <a href="employer-dashboard.html" class="mobile-nav-link active"><i data-lucide="layout-dashboard" class="icon-sm"></i> Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <div class="dashboard-layout">
+        
+        <!-- Dashboard Sidebar -->
+        <aside class="dashboard-sidebar" aria-label="Employer Tabs Navigation">
+          <div class="dashboard-user-card">
+            <div class="dashboard-user-avatar employer-avatar-display" style="background-color: #0F172A;">TC</div>
+            <div class="dashboard-user-name employer-name-display">Priya Patel</div>
+            <div class="dashboard-user-role employer-company-display">Tata Consultancy Services</div>
+          </div>
+
+          <nav class="dashboard-nav-list">
+            <button class="dashboard-nav-item active" data-tab="overview-tab">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="layout-dashboard" class="icon-sm"></i> Overview
+              </span>
+            </button>
+
+            <button class="dashboard-nav-item" data-tab="manage-jobs-tab">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="briefcase" class="icon-sm"></i> Manage Jobs
+              </span>
+              <span class="dashboard-badge" id="sidebarEmployerJobsBadge">0</span>
+            </button>
+
+            <button class="dashboard-nav-item" data-tab="applicants-tab">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="users" class="icon-sm"></i> View Applicants
+              </span>
+              <span class="dashboard-badge" id="sidebarEmployerAppsBadge">0</span>
+            </button>
+
+            <button class="dashboard-nav-item" data-tab="post-job-tab">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="plus-circle" class="icon-sm text-primary"></i> Post New Job
+              </span>
+            </button>
+
+            <button class="dashboard-nav-item" data-tab="company-profile-tab">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="building" class="icon-sm"></i> Company Profile
+              </span>
+            </button>
+
+            <button class="dashboard-nav-item dashboard-logout-btn" onclick="Auth.logout()">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="log-out" class="icon-sm"></i> Sign Out
+              </span>
+            </button>
+          </nav>
+        </aside>
+
+        <!-- Dashboard Content Area -->
+        <div class="dashboard-content">
+
+          <!-- TAB 1: OVERVIEW -->
+          <div class="tab-pane active" id="overview-tab">
+            <div class="dashboard-header">
+              <div>
+                <h1 class="dashboard-title">Recruiter Dashboard</h1>
+                <p class="dashboard-subtitle">Monitor job performance and manage hiring pipelines for <span class="employer-company-display font-semibold">your company</span>.</p>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="EmployerDashboard.switchTab('post-job-tab')">
+                <i data-lucide="plus-circle" class="icon-xs mr-1"></i> Post a Job
+              </button>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon-box stat-icon-blue"><i data-lucide="briefcase" class="icon-md"></i></div>
+                <div>
+                  <div class="stat-number" id="statEmployerJobs">0</div>
+                  <div class="stat-label">Active Job Openings</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-box stat-icon-amber"><i data-lucide="users" class="icon-md"></i></div>
+                <div>
+                  <div class="stat-number" id="statEmployerApplicants">0</div>
+                  <div class="stat-label">Total Applicants</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-box stat-icon-purple"><i data-lucide="award" class="icon-md"></i></div>
+                <div>
+                  <div class="stat-number" id="statEmployerShortlisted">0</div>
+                  <div class="stat-label">Shortlisted Candidates</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-box stat-icon-green"><i data-lucide="check-circle" class="icon-md"></i></div>
+                <div>
+                  <div class="stat-number" id="statEmployerHired">0</div>
+                  <div class="stat-label">Hired / Selected</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Action Cards -->
+            <div class="grid mb-4" style="grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
+              <div class="card" style="padding: var(--space-lg);">
+                <h3 class="text-base font-bold mb-2 flex items-center gap-2">
+                  <i data-lucide="users" class="icon-sm text-primary"></i> Review Incoming Applicants
+                </h3>
+                <p class="text-xs text-secondary mb-3">Evaluate new candidate submissions, inspect resumes, and advance candidates through interview stages.</p>
+                <button class="btn btn-outline btn-sm" onclick="EmployerDashboard.switchTab('applicants-tab')">
+                  Open Candidate Pipeline
+                </button>
+              </div>
+
+              <div class="card" style="padding: var(--space-lg);">
+                <h3 class="text-base font-bold mb-2 flex items-center gap-2">
+                  <i data-lucide="briefcase" class="icon-sm text-success"></i> Manage Your Job Listings
+                </h3>
+                <p class="text-xs text-secondary mb-3">Edit descriptions, adjust salary brackets, or close filled positions with one click.</p>
+                <button class="btn btn-outline btn-sm" onclick="EmployerDashboard.switchTab('manage-jobs-tab')">
+                  Manage Listings
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: MANAGE JOBS -->
+          <div class="tab-pane" id="manage-jobs-tab">
+            <div class="dashboard-header">
+              <div>
+                <h2 class="dashboard-title">Manage Job Openings</h2>
+                <p class="dashboard-subtitle">All job listings published under your company profile.</p>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="EmployerDashboard.switchTab('post-job-tab')">
+                <i data-lucide="plus-circle" class="icon-xs mr-1"></i> Post New Job
+              </button>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Job Title & Category</th>
+                    <th>Type</th>
+                    <th>Location</th>
+                    <th>Applicants</th>
+                    <th>Date Posted</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="employerJobsTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 3: APPLICANTS PIPELINE -->
+          <div class="tab-pane" id="applicants-tab">
+            <div class="dashboard-header">
+              <div>
+                <h2 class="dashboard-title">Candidate Pipeline</h2>
+                <p class="dashboard-subtitle">Review applications and update candidate hiring stages.</p>
+              </div>
+              <div style="min-width: 220px;">
+                <select id="applicantJobFilterSelect" class="form-select" style="font-size: 0.875rem;">
+                  <option value="">All Job Openings</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Candidate</th>
+                    <th>Applied For</th>
+                    <th>Applied Date</th>
+                    <th>Resume</th>
+                    <th>Application Status</th>
+                    <th>Cover Note</th>
+                  </tr>
+                </thead>
+                <tbody id="employerApplicantsTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 4: POST NEW JOB -->
+          <div class="tab-pane" id="post-job-tab">
+            <div class="dashboard-header">
+              <div>
+                <h2 class="dashboard-title">Post a New Job Opening</h2>
+                <p class="dashboard-subtitle">Fill in the specifications below to publish your opening to JobNest candidates.</p>
+              </div>
+            </div>
+
+            <div class="card" style="padding: var(--space-xl);">
+              <form id="postJobForm">
+                <div class="form-row-2">
+                  <div class="form-group">
+                    <label class="form-label" for="jobPostTitle">Job Title <span class="required">*</span></label>
+                    <input type="text" id="jobPostTitle" class="form-control" placeholder="e.g. Senior Backend Engineer" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="jobPostCategory">Job Category <span class="required">*</span></label>
+                    <select id="jobPostCategory" class="form-select" required>
+                      <option value="">Select Category</option>
+                      <option value="Software Development">Software Development</option>
+                      <option value="Data & Analytics">Data & Analytics</option>
+                      <option value="Cloud & DevOps">Cloud & DevOps</option>
+                      <option value="Design & Creative">Design & Creative</option>
+                      <option value="Marketing & Sales">Marketing & Sales</option>
+                      <option value="Product Management">Product Management</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row-3">
+                  <div class="form-group">
+                    <label class="form-label" for="jobPostType">Job Type</label>
+                    <select id="jobPostType" class="form-select">
+                      <option value="Full-Time">Full-Time</option>
+                      <option value="Part-Time">Part-Time</option>
+                      <option value="Internship">Internship</option>
+                      <option value="Contract">Contract</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="jobPostExpLevel">Experience Level</label>
+                    <select id="jobPostExpLevel" class="form-select">
+                      <option value="Fresher">Fresher / Entry Level</option>
+                      <option value="Junior">Junior (1 - 3 yrs)</option>
+                      <option value="Mid-Level" selected>Mid-Level (3 - 6 yrs)</option>
+                      <option value="Senior">Senior (6+ yrs)</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="jobPostWorkMode">Work Mode</label>
+                    <select id="jobPostWorkMode" class="form-select">
+                      <option value="Hybrid" selected>Hybrid</option>
+                      <option value="On-site">On-site</option>
+                      <option value="Remote">Remote</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row-3">
+                  <div class="form-group">
+                    <label class="form-label" for="jobPostLocation">Location (City, State) <span class="required">*</span></label>
+                    <input type="text" id="jobPostLocation" class="form-control" placeholder="e.g. Bengaluru, Karnataka" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="jobPostMinSalary">Min Annual Salary (₹)</label>
+                    <input type="number" id="jobPostMinSalary" class="form-control" placeholder="e.g. 800000" step="50000" value="800000">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="jobPostMaxSalary">Max Annual Salary (₹)</label>
+                    <input type="number" id="jobPostMaxSalary" class="form-control" placeholder="e.g. 1400000" step="50000" value="1400000">
+                  </div>
+                </div>
+
+                <div class="form-row-2">
+                  <div class="form-group">
+                    <label class="form-label" for="jobPostDeadline">Application Deadline</label>
+                    <input type="date" id="jobPostDeadline" class="form-control" value="2026-12-31">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="jobPostSkills">Required Skills (Comma-separated)</label>
+                    <input type="text" id="jobPostSkills" class="form-control" placeholder="e.g. Python, SQL, REST APIs, Git">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="jobPostDesc">Job Description Overview <span class="required">*</span></label>
+                  <textarea id="jobPostDesc" class="form-textarea" placeholder="Describe the role, the team, and general expectations..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="jobPostResponsibilities">Key Responsibilities (One per line)</label>
+                  <textarea id="jobPostResponsibilities" class="form-textarea" placeholder="Design scalable backend microservices&#10;Lead sprint planning and code reviews&#10;Collaborate with cross-functional engineering teams"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="jobPostQualifications">Required Qualifications (One per line)</label>
+                  <textarea id="jobPostQualifications" class="form-textarea" placeholder="B.Tech in Computer Science or equivalent practical experience&#10;3+ years of professional engineering experience&#10;Solid grasp of data structures and algorithms"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="jobPostBenefits">Benefits & Perks (One per line)</label>
+                  <textarea id="jobPostBenefits" class="form-textarea" placeholder="Comprehensive health insurance&#10;Hybrid working flexibility&#10;Annual learning and certification stipend"></textarea>
+                </div>
+
+                <div class="text-right mt-4">
+                  <button type="submit" class="btn btn-primary btn-lg">
+                    <i data-lucide="plus-circle" class="icon-sm"></i> Publish Job Listing
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- TAB 5: COMPANY PROFILE -->
+          <div class="tab-pane" id="company-profile-tab">
+            <div class="dashboard-header">
+              <div>
+                <h2 class="dashboard-title">Company & Recruiter Details</h2>
+                <p class="dashboard-subtitle">Update company branding and recruiter contact info.</p>
+              </div>
+            </div>
+
+            <div class="profile-card-section">
+              <form id="employerCompanyProfileForm">
+                <div class="profile-info-grid">
+                  <div class="form-group">
+                    <label class="form-label" for="empProfileCompanyName">Company Name</label>
+                    <input type="text" id="empProfileCompanyName" class="form-control" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="empProfileRecruiterName">Recruiter Name</label>
+                    <input type="text" id="empProfileRecruiterName" class="form-control" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="empProfilePhone">Contact Phone Number</label>
+                    <input type="tel" id="empProfilePhone" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="empProfileLocation">Office Location</label>
+                    <input type="text" id="empProfileLocation" class="form-control">
+                  </div>
+
+                  <div class="form-group" style="grid-column: 1 / -1;">
+                    <label class="form-label" for="empProfileBio">Company Mission & Culture Summary</label>
+                    <textarea id="empProfileBio" class="form-textarea"></textarea>
+                  </div>
+                </div>
+
+                <div class="text-right mt-3">
+                  <button type="submit" class="btn btn-primary">
+                    <i data-lucide="check" class="icon-sm"></i> Save Company Profile
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Edit Job Modal -->
+  <div class="modal-backdrop" id="editJobModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="editJobModalTitle">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title" id="editJobModalTitle">Edit Job Listing</h3>
+        <button class="modal-close-btn" id="closeEditJobModalBtn">&times;</button>
+      </div>
+
+      <form id="editJobForm">
+        <div class="modal-body">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="editJobTitle">Job Title</label>
+              <input type="text" id="editJobTitle" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editJobCategory">Category</label>
+              <select id="editJobCategory" class="form-select">
+                <option value="Software Development">Software Development</option>
+                <option value="Data & Analytics">Data & Analytics</option>
+                <option value="Cloud & DevOps">Cloud & DevOps</option>
+                <option value="Design & Creative">Design & Creative</option>
+                <option value="Marketing & Sales">Marketing & Sales</option>
+                <option value="Product Management">Product Management</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-3">
+            <div class="form-group">
+              <label class="form-label" for="editJobType">Job Type</label>
+              <select id="editJobType" class="form-select">
+                <option value="Full-Time">Full-Time</option>
+                <option value="Part-Time">Part-Time</option>
+                <option value="Internship">Internship</option>
+                <option value="Contract">Contract</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editJobExpLevel">Experience Level</label>
+              <select id="editJobExpLevel" class="form-select">
+                <option value="Fresher">Fresher</option>
+                <option value="Junior">Junior</option>
+                <option value="Mid-Level">Mid-Level</option>
+                <option value="Senior">Senior</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editJobWorkMode">Work Mode</label>
+              <select id="editJobWorkMode" class="form-select">
+                <option value="On-site">On-site</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Remote">Remote</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="editJobLocation">Location</label>
+              <input type="text" id="editJobLocation" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editJobSalaryText">Salary Package Text</label>
+              <input type="text" id="editJobSalaryText" class="form-control" placeholder="e.g. ₹8,00,000 - ₹12,00,000 / yr">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editJobSkills">Skills (Comma-separated)</label>
+            <input type="text" id="editJobSkills" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editJobDesc">Job Description</label>
+            <textarea id="editJobDesc" class="form-textarea" required></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelEditJobModalBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="check" class="icon-sm"></i> Save Job Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container text-center" style="font-size: 0.8125rem; color: #64748B;">
+      © 2026 JobNest Portal. Pure HTML5, CSS3, Vanilla JS. Employer Recruiter Portal.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/employer-dashboard.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      EmployerDashboard.init();
+    });
+  </script>
+</body>
+</html>

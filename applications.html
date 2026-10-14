@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Job Applications — JobNest</title>
+  <meta name="description" content="Track your active job applications, interview progress, and recruiter status on JobNest.">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Demo Notice Banner -->
+  <div class="demo-banner">
+    <span>💡 <strong>Real-Time Tracker:</strong> Application statuses update when altered from the Employer Portal.</span>
+    <button class="btn-reset-quick btn-reset-demo-data" type="button">Reset Demo Data</button>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+          Job<span>Nest</span>
+        </a>
+
+        <div class="nav-links-desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="jobs.html" class="nav-link">Jobs</a>
+          <a href="companies.html" class="nav-link">Companies</a>
+          <a href="seeker-dashboard.html" class="nav-link">Dashboard</a>
+        </div>
+
+        <div class="nav-actions" id="nav-auth-container"></div>
+
+        <button class="mobile-nav-toggle" id="mobileMenuBtn" aria-label="Open Navigation Menu">
+          <i data-lucide="menu" class="icon-lg"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main style="padding-top: var(--space-2xl); padding-bottom: var(--space-3xl);">
+    <div class="container">
+      
+      <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+        <div>
+          <span class="section-tag">Candidate Tracker</span>
+          <h1 class="text-2xl font-bold mt-1">My Job Applications</h1>
+          <p class="text-secondary text-sm">Monitor your hiring pipeline and recruiter feedback in real-time.</p>
+        </div>
+        <a href="jobs.html" class="btn btn-outline btn-sm">Browse More Jobs</a>
+      </div>
+
+      <!-- Application Status Legend / Filter -->
+      <div class="card mb-4" style="padding: 1rem 1.25rem;">
+        <div class="flex items-center justify-between flex-wrap gap-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-muted">Status Stages:</span>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="badge status-applied">Applied</span>
+            <span class="badge status-under-review">Under Review</span>
+            <span class="badge status-shortlisted">Shortlisted</span>
+            <span class="badge status-selected">Selected (Hired)</span>
+            <span class="badge status-rejected">Rejected</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Applications Table -->
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Position & Company</th>
+              <th>Location</th>
+              <th>Date Applied</th>
+              <th>Application Status</th>
+              <th>Resume</th>
+              <th class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dedicatedApplicationsTableBody">
+            <!-- Rendered dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container text-center" style="font-size: 0.8125rem; color: #64748B;">
+      © 2026 JobNest Portal. Pure HTML5, CSS3, Vanilla JS.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (!Auth.requireAuth("seeker", "login.html")) return;
+      const user = Auth.getCurrentUser();
+      const tbody = document.getElementById("dedicatedApplicationsTableBody");
+
+      const apps = Storage.getApplicationsBySeeker(user.id);
+
+      if (apps.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center" style="padding: 3rem;">
+              <div class="empty-state-icon" style="margin: 0 auto 0.75rem auto;">
+                <i data-lucide="file-question" class="icon-xl"></i>
+              </div>
+              <h3 class="font-bold text-lg mb-1">No Applications Submitted</h3>
+              <p class="text-xs text-muted mb-3">You haven't submitted any job applications yet. Find your next opportunity today!</p>
+              <a href="jobs.html" class="btn btn-primary btn-sm">Find Jobs Now</a>
+            </td>
+          </tr>
+        `;
+        App.initIcons();
+        return;
+      }
+
+      tbody.innerHTML = apps.map(app => {
+        const statusClass = "status-" + app.status.toLowerCase().replace(/\s+/g, "-");
+        return `
+          <tr>
+            <td>
+              <div class="table-company-cell">
+                <div class="company-logo-badge" style="background-color: ${app.logoBg || '#2563EB'}; width: 36px; height: 36px; font-size: 0.8125rem;">
+                  ${Validation.escapeHTML(app.companyLogo || app.companyName.substring(0, 3).toUpperCase())}
+                </div>
+                <div>
+                  <a href="job-details.html?id=${encodeURIComponent(app.jobId)}" class="font-bold text-main" style="display: block;">
+                    ${Validation.escapeHTML(app.jobTitle)}
+                  </a>
+                  <span class="text-xs text-muted">${Validation.escapeHTML(app.companyName)}</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="text-sm">${Validation.escapeHTML(app.location || 'India')}</span></td>
+            <td><span class="text-sm">${Validation.escapeHTML(app.appliedDate)}</span></td>
+            <td>
+              <span class="badge ${statusClass}">
+                ${Validation.escapeHTML(app.status)}
+              </span>
+            </td>
+            <td>
+              <span class="text-xs text-secondary" title="${Validation.escapeHTML(app.resumeName || 'Resume.pdf')}">
+                <i data-lucide="file-text" class="icon-xs mr-1" style="display:inline;"></i>
+                ${Validation.escapeHTML(app.resumeName || 'Resume.pdf')}
+              </span>
+            </td>
+            <td class="text-right">
+              <a href="job-details.html?id=${encodeURIComponent(app.jobId)}" class="btn btn-secondary btn-sm">
+                View Job
+              </a>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      App.initIcons();
+    });
+  </script>
+</body>
+</html>

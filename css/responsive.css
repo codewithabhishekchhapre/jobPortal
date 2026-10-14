@@ -1,0 +1,202 @@
+/* ==========================================================================
+   JobNest - Responsive Styles & Mobile Media Queries
+   Mobile-first & adaptive breakpoints (1024px, 768px, 640px, 480px)
+   ========================================================================== */
+
+/* Medium Devices (Tablets, small laptops <= 1024px) */
+@media (max-width: 1024px) {
+  .dashboard-layout {
+    grid-template-columns: 220px 1fr;
+    gap: var(--space-md);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+  }
+
+  .jobs-page-layout {
+    grid-template-columns: 280px 1fr !important;
+  }
+}
+
+/* Tablets and Mobile Landscape (<= 768px) */
+@media (max-width: 768px) {
+  h1 { font-size: 1.85rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  /* Navbar */
+  .nav-links-desktop {
+    display: none;
+  }
+
+  .mobile-nav-toggle {
+    display: inline-flex;
+  }
+
+  /* Keep user profile or login link clean in header */
+  .user-name-label {
+    display: none;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding: var(--space-2xl) 0;
+  }
+
+  .hero-title {
+    font-size: 2.15rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: var(--space-xl);
+  }
+
+  .hero-search-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm);
+  }
+
+  .search-divider {
+    display: none;
+  }
+
+  .hero-search-card {
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+  }
+
+  .hero-search-form .btn {
+    width: 100%;
+    margin-top: 0.25rem;
+  }
+
+  /* Jobs Page Layout & Filter Drawer */
+  .jobs-page-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .filter-sidebar-mobile-toggle {
+    display: flex !important;
+    margin-bottom: var(--space-md);
+  }
+
+  .filter-sidebar {
+    display: none; /* Can be toggled open */
+  }
+
+  .filter-sidebar.mobile-open {
+    display: block;
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Jobs Grid */
+  .jobs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Dashboard Layout */
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+    padding: var(--space-lg) 0;
+  }
+
+  .dashboard-sidebar {
+    position: static;
+    margin-bottom: var(--space-lg);
+  }
+
+  .dashboard-nav-list {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+
+  .dashboard-nav-item {
+    white-space: nowrap;
+    width: auto;
+  }
+
+  .dashboard-user-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    text-align: left;
+    padding-bottom: var(--space-md);
+  }
+
+  .dashboard-user-avatar {
+    margin: 0;
+    width: 52px;
+    height: 52px;
+    font-size: 1.15rem;
+  }
+
+  .dashboard-logout-btn {
+    display: none; /* moved to mobile nav or tab */
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Form Grids */
+  .form-row-2,
+  .form-row-3,
+  .profile-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Small Mobile Screens (<= 480px) */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .job-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .job-actions-row {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .job-actions-row .btn {
+    flex: 1;
+  }
+
+  .modal-box {
+    margin: 0;
+    max-height: 95vh;
+  }
+
+  .toast-container {
+    left: var(--space-sm);
+    right: var(--space-sm);
+    bottom: var(--space-sm);
+    max-width: none;
+  }
+}

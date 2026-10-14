@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — JobNest Portal</title>
+  <meta name="description" content="Sign in to your JobNest candidate or recruiter account to access applications and job postings.">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body style="background-color: #F8FAFC;">
+
+  <!-- Demo Notice Banner -->
+  <div class="demo-banner">
+    <span>💡 <strong>Frontend Demo Auth:</strong> Accounts are validated against local storage.</span>
+    <button class="btn-reset-quick btn-reset-demo-data" type="button">Reset Demo Data</button>
+  </div>
+
+  <!-- Minimal Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="navbar" style="justify-content: space-between;">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+          Job<span>Nest</span>
+        </a>
+        <a href="register.html" class="btn btn-outline btn-sm">
+          Create Account
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding: var(--space-3xl) 0;">
+    <div class="container-narrow" style="max-width: 480px;">
+      
+      <!-- Login Card -->
+      <div class="card" style="padding: var(--space-2xl) var(--space-xl);">
+        <div class="text-center mb-4">
+          <h1 class="text-2xl font-bold" style="font-size: 1.75rem;">Welcome Back</h1>
+          <p class="text-secondary text-sm mt-1">Sign in to access your JobNest candidate or employer dashboard</p>
+        </div>
+
+        <!-- 1-Click Demo Buttons -->
+        <div class="card mb-4" style="background-color: #F1F5F9; border: 1px dashed var(--primary-border); padding: 0.85rem;">
+          <span class="text-xs font-bold uppercase tracking-wider text-primary block mb-2 text-center">⚡ 1-Click Demo Sign In</span>
+          <div class="flex gap-2">
+            <button type="button" class="btn btn-secondary btn-sm" id="quickLoginSeeker" style="flex: 1; font-size: 0.75rem;">
+              <i data-lucide="user" class="icon-xs"></i> Job Seeker Demo
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" id="quickLoginEmployer" style="flex: 1; font-size: 0.75rem;">
+              <i data-lucide="briefcase" class="icon-xs"></i> Employer Demo
+            </button>
+          </div>
+        </div>
+
+        <!-- Form Error Banner -->
+        <div id="loginAlertBox" class="card mb-3" style="display: none; padding: 0.75rem 1rem; border-left: 4px solid var(--danger); background-color: var(--danger-light); font-size: 0.875rem; color: var(--danger-text);">
+          <span id="loginAlertText"></span>
+        </div>
+
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="loginEmail">Email Address <span class="required">*</span></label>
+            <input type="email" id="loginEmail" class="form-control" required placeholder="seeker@demo.com" autocomplete="email">
+          </div>
+
+          <div class="form-group">
+            <div class="flex items-center justify-between mb-1">
+              <label class="form-label" for="loginPassword" style="margin-bottom: 0;">Password <span class="required">*</span></label>
+              <a href="#" id="forgotPasswordLink" class="text-xs text-primary" style="font-weight: 500;">Forgot password?</a>
+            </div>
+            <input type="password" id="loginPassword" class="form-control" required placeholder="••••••••" autocomplete="current-password">
+          </div>
+
+          <div class="form-group">
+            <label class="form-checkbox-label">
+              <input type="checkbox" id="loginRememberMe">
+              <span>Remember me on this browser</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="loginSubmitBtn">
+            <i data-lucide="log-in" class="icon-sm"></i> Sign In to Account
+          </button>
+        </form>
+
+        <div class="text-center mt-4 pt-3" style="border-top: 1px solid var(--border-color); font-size: 0.875rem;">
+          <span class="text-secondary">Don't have an account yet?</span>
+          <a href="register.html" class="font-semibold text-primary ml-1">Create an Account</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="padding-top: var(--space-xl); padding-bottom: var(--space-xl);">
+    <div class="container text-center" style="font-size: 0.8125rem; color: #64748B;">
+      © 2026 JobNest Portal. Built with pure HTML5, CSS3 & Vanilla JavaScript.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // If already logged in, redirect
+      const user = Auth.getCurrentUser();
+      if (user) {
+        window.location.href = user.role === "employer" ? "employer-dashboard.html" : "seeker-dashboard.html";
+        return;
+      }
+
+      const form = document.getElementById("loginForm");
+      const emailInput = document.getElementById("loginEmail");
+      const passwordInput = document.getElementById("loginPassword");
+      const rememberInput = document.getElementById("loginRememberMe");
+      const alertBox = document.getElementById("loginAlertBox");
+      const alertText = document.getElementById("loginAlertText");
+
+      // 1-Click Demo buttons
+      document.getElementById("quickLoginSeeker").addEventListener("click", () => {
+        emailInput.value = "seeker@demo.com";
+        passwordInput.value = "password123";
+        form.requestSubmit();
+      });
+
+      document.getElementById("quickLoginEmployer").addEventListener("click", () => {
+        emailInput.value = "employer@demo.com";
+        passwordInput.value = "password123";
+        form.requestSubmit();
+      });
+
+      // Forgot password mock
+      document.getElementById("forgotPasswordLink").addEventListener("click", (e) => {
+        e.preventDefault();
+        alert("Demo Reset Notice:\nFor this frontend demo, use password: 'password123' for any demo user or reset data using the button in the footer.");
+      });
+
+      // Form Submission
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        Validation.clearAllErrors(form);
+        alertBox.style.display = "none";
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        let isValid = true;
+
+        if (!email) {
+          Validation.showError(emailInput, "Please enter your email address.");
+          isValid = false;
+        } else if (!Validation.isValidEmail(email)) {
+          Validation.showError(emailInput, "Please enter a valid email address.");
+          isValid = false;
+        }
+
+        if (!password) {
+          Validation.showError(passwordInput, "Please enter your password.");
+          isValid = false;
+        }
+
+        if (!isValid) return;
+
+        const result = Auth.login(email, password, rememberInput.checked);
+
+        if (!result.success) {
+          alertBox.style.display = "block";
+          alertText.textContent = result.message;
+          return;
+        }
+
+        App.showToast(result.message, "success");
+
+        // Check for returnUrl
+        const params = new URLSearchParams(window.location.search);
+        const returnUrl = params.get("returnUrl");
+
+        setTimeout(() => {
+          if (returnUrl) {
+            window.location.href = decodeURIComponent(returnUrl);
+          } else {
+            window.location.href = result.user.role === "employer" ? "employer-dashboard.html" : "seeker-dashboard.html";
+          }
+        }, 600);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Dashboard — JobNest</title>
+  <meta name="description" content="Manage your candidate profile, resume, job applications status, and bookmarked jobs on JobNest.">
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Demo Notice Banner -->
+  <div class="demo-banner">
+    <span>💡 <strong>Candidate Portal:</strong> Update your profile, resume metadata, and live applications.</span>
+    <button class="btn-reset-quick btn-reset-demo-data" type="button">Reset Demo Data</button>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="index.html" class="brand-logo">
+          <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+          Job<span>Nest</span>
+        </a>
+
+        <div class="nav-links-desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="jobs.html" class="nav-link">Jobs</a>
+          <a href="companies.html" class="nav-link">Companies</a>
+          <a href="seeker-dashboard.html" class="nav-link active">My Dashboard</a>
+        </div>
+
+        <div class="nav-actions" id="nav-auth-container"></div>
+
+        <button class="mobile-nav-toggle" id="mobileMenuBtn" aria-label="Open Navigation Menu">
+          <i data-lucide="menu" class="icon-lg"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer-overlay" id="mobileNavOverlay"></div>
+  <div class="mobile-drawer" id="mobileNavDrawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+    <div class="mobile-drawer-header">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon-box"><i data-lucide="briefcase" class="icon-md"></i></div>
+        Job<span>Nest</span>
+      </a>
+      <button class="mobile-drawer-close" id="mobileNavCloseBtn" aria-label="Close Navigation Menu">&times;</button>
+    </div>
+    <div class="mobile-drawer-body">
+      <div id="mobile-nav-auth-container"></div>
+      <div class="mobile-nav-links">
+        <a href="index.html" class="mobile-nav-link"><i data-lucide="home" class="icon-sm"></i> Home</a>
+        <a href="jobs.html" class="mobile-nav-link"><i data-lucide="briefcase" class="icon-sm"></i> Jobs</a>
+        <a href="companies.html" class="mobile-nav-link"><i data-lucide="building-2" class="icon-sm"></i> Companies</a>
+        <a href="seeker-dashboard.html" class="mobile-nav-link active"><i data-lucide="layout-dashboard" class="icon-sm"></i> Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <div class="dashboard-layout">
+        
+        <!-- Dashboard Sidebar -->
+        <aside class="dashboard-sidebar" aria-label="Dashboard Tabs Navigation">
+          <div class="dashboard-user-card">
+            <div class="dashboard-user-avatar seeker-avatar-display">AS</div>
+            <div class="dashboard-user-name seeker-name-display">Aarav Sharma</div>
+            <div class="dashboard-user-role seeker-title-display">Frontend & Full Stack Dev</div>
+          </div>
+
+          <nav class="dashboard-nav-list">
+            <button class="dashboard-nav-item active" data-tab="overview-tab">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="layout-dashboard" class="icon-sm"></i> Overview
+              </span>
+            </button>
+
+            <button class="dashboard-nav-item" data-tab="applications-tab">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="file-check" class="icon-sm"></i> Applications
+              </span>
+              <span class="dashboard-badge" id="sidebarAppsBadge">0</span>
+            </button>
+
+            <button class="dashboard-nav-item" data-tab="saved-jobs-tab">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="bookmark" class="icon-sm"></i> Saved Jobs
+              </span>
+              <span class="dashboard-badge" id="sidebarSavedBadge">0</span>
+            </button>
+
+            <button class="dashboard-nav-item" data-tab="profile-tab">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="user" class="icon-sm"></i> Edit Profile
+              </span>
+            </button>
+
+            <button class="dashboard-nav-item" data-tab="resume-tab">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="file-text" class="icon-sm"></i> My Resume
+              </span>
+            </button>
+
+            <button class="dashboard-nav-item dashboard-logout-btn" onclick="Auth.logout()">
+              <span class="dashboard-nav-item-left">
+                <i data-lucide="log-out" class="icon-sm"></i> Sign Out
+              </span>
+            </button>
+          </nav>
+        </aside>
+
+        <!-- Dashboard Main Content Area -->
+        <div class="dashboard-content">
+
+          <!-- TAB 1: OVERVIEW -->
+          <div class="tab-pane active" id="overview-tab">
+            <div class="dashboard-header">
+              <div>
+                <h1 class="dashboard-title">Welcome back, <span class="seeker-name-display">Candidate</span>!</h1>
+                <p class="dashboard-subtitle">Track your application pipeline, review saved listings, and keep your profile fresh.</p>
+              </div>
+              <a href="jobs.html" class="btn btn-primary btn-sm">
+                <i data-lucide="search" class="icon-xs mr-1"></i> Browse Open Jobs
+              </a>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon-box stat-icon-blue"><i data-lucide="send" class="icon-md"></i></div>
+                <div>
+                  <div class="stat-number" id="statTotalApplied">0</div>
+                  <div class="stat-label">Total Applied</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-box stat-icon-amber"><i data-lucide="clock" class="icon-md"></i></div>
+                <div>
+                  <div class="stat-number" id="statUnderReview">0</div>
+                  <div class="stat-label">Under Review</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-box stat-icon-green"><i data-lucide="award" class="icon-md"></i></div>
+                <div>
+                  <div class="stat-number" id="statShortlisted">0</div>
+                  <div class="stat-label">Shortlisted</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-box stat-icon-purple"><i data-lucide="check-circle-2" class="icon-md"></i></div>
+                <div>
+                  <div class="stat-number" id="statSelected">0</div>
+                  <div class="stat-label">Selected / Hired</div>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-box stat-icon-blue"><i data-lucide="bookmark" class="icon-md"></i></div>
+                <div>
+                  <div class="stat-number" id="statSavedJobs">0</div>
+                  <div class="stat-label">Saved Jobs</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Action Cards -->
+            <div class="grid mb-4" style="grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
+              <div class="card" style="padding: var(--space-lg);">
+                <h3 class="text-base font-bold mb-2 flex items-center gap-2">
+                  <i data-lucide="file-check" class="icon-sm text-primary"></i> Application Status Overview
+                </h3>
+                <p class="text-xs text-secondary mb-3">Recruiters are currently evaluating candidate profiles. Check your applications tab to see real-time status updates.</p>
+                <button class="btn btn-outline btn-sm" onclick="SeekerDashboard.switchTab('applications-tab')">
+                  View All Applications
+                </button>
+              </div>
+
+              <div class="card" style="padding: var(--space-lg);">
+                <h3 class="text-base font-bold mb-2 flex items-center gap-2">
+                  <i data-lucide="sparkles" class="icon-sm text-warning"></i> Complete Your Profile
+                </h3>
+                <p class="text-xs text-secondary mb-3">Ensure your technical skills, portfolio links, and resume are updated to stand out to verified recruiters.</p>
+                <button class="btn btn-outline btn-sm" onclick="SeekerDashboard.switchTab('profile-tab')">
+                  Update Profile Details
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: APPLICATIONS TRACKER -->
+          <div class="tab-pane" id="applications-tab">
+            <div class="dashboard-header">
+              <div>
+                <h2 class="dashboard-title">My Applications</h2>
+                <p class="dashboard-subtitle">Real-time status updates from hiring teams and recruiters.</p>
+              </div>
+              <a href="jobs.html" class="btn btn-outline btn-sm">Find More Jobs</a>
+            </div>
+
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Job & Company</th>
+                    <th>Location</th>
+                    <th>Applied On</th>
+                    <th>Status</th>
+                    <th>Resume Attached</th>
+                    <th class="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="applicationsListTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB 3: SAVED JOBS -->
+          <div class="tab-pane" id="saved-jobs-tab">
+            <div class="dashboard-header">
+              <div>
+                <h2 class="dashboard-title">Saved Job Bookmarks</h2>
+                <p class="dashboard-subtitle">Jobs you've marked for future review or application.</p>
+              </div>
+              <a href="jobs.html" class="btn btn-primary btn-sm">Explore More Listings</a>
+            </div>
+
+            <div id="savedJobsContainer">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- TAB 4: EDIT PROFILE -->
+          <div class="tab-pane" id="profile-tab">
+            <div class="dashboard-header">
+              <div>
+                <h2 class="dashboard-title">Edit Candidate Profile</h2>
+                <p class="dashboard-subtitle">Update your personal details and professional summary.</p>
+              </div>
+            </div>
+
+            <div class="profile-card-section">
+              <form id="seekerProfileForm">
+                <div class="profile-info-grid">
+                  <div class="form-group">
+                    <label class="form-label" for="profileFullName">Full Name <span class="required">*</span></label>
+                    <input type="text" id="profileFullName" class="form-control" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="profileEmail">Email Address (Read-Only)</label>
+                    <input type="email" id="profileEmail" class="form-control" disabled style="background-color: var(--surface-alt);">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="profilePhone">Mobile Number <span class="required">*</span></label>
+                    <input type="tel" id="profilePhone" class="form-control" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="profileHeadline">Professional Headline / Title</label>
+                    <input type="text" id="profileHeadline" class="form-control" placeholder="e.g. Senior Frontend Developer">
+                  </div>
+
+                  <div class="form-group" style="grid-column: 1 / -1;">
+                    <label class="form-label" for="profileLocation">Current Location (City, State)</label>
+                    <input type="text" id="profileLocation" class="form-control" placeholder="e.g. Bengaluru, Karnataka">
+                  </div>
+
+                  <div class="form-group" style="grid-column: 1 / -1;">
+                    <label class="form-label" for="profileBio">Professional Summary / Bio</label>
+                    <textarea id="profileBio" class="form-textarea" placeholder="Describe your experience and career objectives..."></textarea>
+                  </div>
+                </div>
+
+                <div class="text-right mt-3">
+                  <button type="submit" class="btn btn-primary">
+                    <i data-lucide="check" class="icon-sm"></i> Save Profile Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Skills Tag Management Section -->
+            <div class="profile-card-section">
+              <h3 class="profile-section-title">
+                <span>Technical & Core Skills</span>
+              </h3>
+              <p class="text-xs text-secondary mb-3">Add skills to help matching algorithms and recruiters find your profile.</p>
+
+              <div id="profileSkillsContainer" class="skills-tags-wrap">
+                <!-- Skill chips rendered here -->
+              </div>
+
+              <div class="flex gap-2 mt-3" style="max-width: 420px;">
+                <input type="text" id="profileSkillInput" class="form-control" placeholder="e.g. Python, Docker, React...">
+                <button type="button" class="btn btn-secondary" id="addSkillBtn">Add</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: RESUME -->
+          <div class="tab-pane" id="resume-tab">
+            <div class="dashboard-header">
+              <div>
+                <h2 class="dashboard-title">Manage Resume</h2>
+                <p class="dashboard-subtitle">Keep your resume up to date for seamless 1-click job applications.</p>
+              </div>
+            </div>
+
+            <div class="profile-card-section">
+              <h3 class="profile-section-title">
+                <span>Active Resume</span>
+              </h3>
+
+              <!-- Current Resume Display Card -->
+              <div class="resume-card mb-4" id="resumeCurrentCard" style="display: none;">
+                <div class="resume-info">
+                  <div class="resume-icon-box">
+                    <i data-lucide="file-text" class="icon-md"></i>
+                  </div>
+                  <div>
+                    <div class="resume-name" id="resumeFileName">Resume.pdf</div>
+                    <div class="resume-sub" id="resumeFileSize">1.2 MB • Uploaded Recently</div>
+                  </div>
+                </div>
+                <div>
+                  <button type="button" class="btn btn-danger-outline btn-sm" id="deleteResumeBtn">
+                    <i data-lucide="trash-2" class="icon-xs mr-1"></i> Remove
+                  </button>
+                </div>
+              </div>
+
+              <!-- Simulated Resume Preview Box -->
+              <div id="resumePreviewBox" class="card mb-4" style="background-color: #F8FAFC; padding: 1rem; border-left: 4px solid var(--primary); display: none;">
+                <span class="text-xs font-bold text-primary block mb-1">ATS Metadata Extraction Preview:</span>
+                <p id="resumePreviewText" class="text-xs text-secondary" style="font-family: var(--font-mono);"></p>
+              </div>
+
+              <!-- Upload New Resume Form -->
+              <div class="card" style="padding: var(--space-xl); border: 2px dashed var(--border-color); text-align: center; background-color: #FFFFFF;">
+                <div class="empty-state-icon" style="margin: 0 auto 0.75rem auto;">
+                  <i data-lucide="upload-cloud" class="icon-xl"></i>
+                </div>
+                <h4 class="font-bold mb-1">Upload New Resume File</h4>
+                <p class="text-xs text-muted mb-3">Upload PDF, DOC, or DOCX formats (Max 5MB file metadata stored for demo).</p>
+                <div style="max-width: 280px; margin: 0 auto;">
+                  <input type="file" id="resumeUploadInput" class="form-control" accept=".pdf,.doc,.docx" style="font-size: 0.8125rem;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container text-center" style="font-size: 0.8125rem; color: #64748B;">
+      © 2026 JobNest Portal. Pure HTML5, CSS3, Vanilla JS. Candidate Dashboard.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/seeker-dashboard.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      SeekerDashboard.init();
+    });
+  </script>
+</body>
+</html>
