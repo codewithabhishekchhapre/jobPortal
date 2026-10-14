@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
-<body>
+<body class="has-job-details">
 
   <!-- Demo Notice Banner -->
   <div class="demo-banner">
@@ -86,15 +86,15 @@
       </div>
 
       <!-- Job Hero Header Card -->
-      <div class="card mb-4" style="padding: var(--space-xl);">
-        <div class="flex items-start justify-between flex-wrap gap-4">
-          <div class="flex items-start gap-4">
-            <div id="detailCompanyLogo" class="company-logo-badge" style="width: 68px; height: 68px; font-size: 1.35rem; border-radius: var(--radius-lg);">
+      <div class="card mb-4 job-details-header-card">
+        <div class="job-details-header-content">
+          <div class="job-details-brand-wrap">
+            <div id="detailCompanyLogo" class="company-logo-badge job-detail-logo">
               JOB
             </div>
-            <div>
+            <div class="job-detail-header-info">
               <span id="detailCompanyName" class="font-semibold text-secondary text-base">Company Name</span>
-              <h1 id="detailJobTitle" class="text-2xl font-bold mt-1" style="font-size: 2rem;">Loading Job Title...</h1>
+              <h1 id="detailJobTitle" class="job-detail-title">Loading Job Title...</h1>
               
               <div class="job-meta-list mt-2">
                 <span class="job-meta-item"><i data-lucide="map-pin" class="icon-sm"></i> <span id="detailLocation">Location</span></span>
@@ -106,7 +106,7 @@
           </div>
 
           <!-- Action Buttons -->
-          <div class="flex items-center gap-2 flex-wrap" id="detailActionButtons">
+          <div class="job-details-header-actions" id="detailActionButtons">
             <button class="btn btn-outline" id="detailSaveJobBtn">
               <i data-lucide="bookmark" class="icon-sm"></i> Save Job
             </button>
@@ -118,12 +118,12 @@
       </div>
 
       <!-- Main Job Grid: Details + Sidebar Info -->
-      <div class="grid" style="grid-template-columns: 2fr 1fr; gap: var(--space-xl); align-items: start;">
+      <div class="job-details-layout">
         
         <!-- Left: Full Job Specifications -->
-        <div>
+        <div class="job-details-main">
           <!-- Job Description -->
-          <div class="card mb-4" style="padding: var(--space-xl);">
+          <div class="card mb-4 job-details-card">
             <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
               <i data-lucide="file-text" class="icon-sm text-primary"></i> Job Overview
             </h3>
@@ -133,7 +133,7 @@
           </div>
 
           <!-- Responsibilities -->
-          <div class="card mb-4" style="padding: var(--space-xl);">
+          <div class="card mb-4 job-details-card">
             <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
               <i data-lucide="check-circle" class="icon-sm text-primary"></i> Key Responsibilities
             </h3>
@@ -143,7 +143,7 @@
           </div>
 
           <!-- Qualifications -->
-          <div class="card mb-4" style="padding: var(--space-xl);">
+          <div class="card mb-4 job-details-card">
             <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
               <i data-lucide="graduation-cap" class="icon-sm text-primary"></i> Required Qualifications & Experience
             </h3>
@@ -153,7 +153,7 @@
           </div>
 
           <!-- Benefits -->
-          <div class="card mb-4" style="padding: var(--space-xl);">
+          <div class="card mb-4 job-details-card">
             <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
               <i data-lucide="gift" class="icon-sm text-primary"></i> Benefits & Perks
             </h3>
@@ -172,9 +172,9 @@
         </div>
 
         <!-- Right Sidebar: Quick Facts & Company Snapshot -->
-        <aside>
+        <aside class="job-details-sidebar">
           <!-- Quick Job Summary Card -->
-          <div class="card mb-4" style="padding: var(--space-lg);">
+          <div class="card mb-4 job-details-card">
             <h3 class="text-base font-bold mb-3 pb-2" style="border-bottom: 1px solid var(--border-color);">
               Job Overview
             </h3>
@@ -207,7 +207,7 @@
           </div>
 
           <!-- Company Overview Card -->
-          <div class="card" style="padding: var(--space-lg);">
+          <div class="card job-details-card">
             <h3 class="text-base font-bold mb-3 pb-2" style="border-bottom: 1px solid var(--border-color);">
               About the Company
             </h3>
@@ -230,6 +230,22 @@
       </div>
     </div>
   </main>
+
+  <!-- Sticky Bottom Apply Bar for Mobile -->
+  <div class="mobile-bottom-apply-bar" id="mobileBottomApplyBar">
+    <div class="mobile-bottom-salary">
+      <span class="text-xs text-muted block" style="font-size: 0.7rem;">Offered Package</span>
+      <strong id="mobileBottomSalary" class="text-primary text-sm font-bold">₹0</strong>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="btn btn-outline btn-sm btn-icon-only" id="mobileBottomSaveBtn" title="Save Job" aria-label="Save Job">
+        <i data-lucide="bookmark" class="icon-sm"></i>
+      </button>
+      <button class="btn btn-primary btn-sm" id="mobileBottomApplyBtn">
+        <i data-lucide="send" class="icon-xs mr-1"></i> Apply Now
+      </button>
+    </div>
+  </div>
 
   <!-- Apply Modal Dialog -->
   <div class="modal-backdrop" id="applyModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="applyModalJobTitle">
@@ -389,8 +405,12 @@
         </li>
       `).join("");
 
-      // Fill Sidebar
-      document.getElementById("detailSalary").textContent = job.salaryText || App.formatSalary(job.minSalary, job.maxSalary);
+      // Fill Sidebar & Mobile Bottom Bar
+      const formattedSalary = job.salaryText || App.formatSalary(job.minSalary, job.maxSalary);
+      document.getElementById("detailSalary").textContent = formattedSalary;
+      const mobSalaryEl = document.getElementById("mobileBottomSalary");
+      if (mobSalaryEl) mobSalaryEl.textContent = formattedSalary;
+
       document.getElementById("detailExperience").textContent = job.experienceLevel || "All Levels";
       document.getElementById("detailWorkModeSummary").textContent = job.workMode || "On-site";
       document.getElementById("detailDeadline").textContent = job.deadline || "Rolling Applications";
@@ -415,41 +435,71 @@
       const currentUser = Auth.getCurrentUser();
       const isSeeker = Boolean(currentUser && currentUser.role === "seeker");
       const saveBtn = document.getElementById("detailSaveJobBtn");
+      const mobSaveBtn = document.getElementById("mobileBottomSaveBtn");
 
-      if (saveBtn) {
-        if (isSeeker && Storage.isJobSaved(currentUser.id, job.id)) {
-          saveBtn.classList.add("active");
-          saveBtn.innerHTML = `<i data-lucide="bookmark-check" class="icon-sm"></i> Saved`;
-        }
-
-        saveBtn.addEventListener("click", () => {
-          if (!currentUser) {
-            App.showToast("Please log in to save jobs.", "warning");
-            return;
-          }
-          const saved = Storage.toggleSaveJob(currentUser.id, job.id);
-          saveBtn.classList.toggle("active", saved);
-          saveBtn.innerHTML = saved 
+      function syncSaveButtons(isSaved) {
+        if (saveBtn) {
+          saveBtn.classList.toggle("active", isSaved);
+          saveBtn.innerHTML = isSaved 
             ? `<i data-lucide="bookmark-check" class="icon-sm"></i> Saved` 
             : `<i data-lucide="bookmark" class="icon-sm"></i> Save Job`;
-          App.initIcons();
-          App.showToast(saved ? "Job saved to your bookmarks!" : "Job removed from bookmarks.", "info");
-        });
+        }
+        if (mobSaveBtn) {
+          mobSaveBtn.classList.toggle("active", isSaved);
+          mobSaveBtn.innerHTML = isSaved 
+            ? `<i data-lucide="bookmark-check" class="icon-sm text-primary"></i>` 
+            : `<i data-lucide="bookmark" class="icon-sm"></i>`;
+        }
+        App.initIcons();
       }
+
+      if (isSeeker && Storage.isJobSaved(currentUser.id, job.id)) {
+        syncSaveButtons(true);
+      }
+
+      const handleSaveClick = () => {
+        if (!currentUser) {
+          App.showToast("Please log in to save jobs.", "warning");
+          return;
+        }
+        const saved = Storage.toggleSaveJob(currentUser.id, job.id);
+        syncSaveButtons(saved);
+        App.showToast(saved ? "Job saved to your bookmarks!" : "Job removed from bookmarks.", "info");
+      };
+
+      if (saveBtn) saveBtn.addEventListener("click", handleSaveClick);
+      if (mobSaveBtn) mobSaveBtn.addEventListener("click", handleSaveClick);
 
       // Check Apply State
       const applyBtn = document.getElementById("detailApplyNowBtn");
+      const mobApplyBtn = document.getElementById("mobileBottomApplyBtn");
       const hasApplied = isSeeker && Storage.hasSeekerApplied(currentUser.id, job.id);
 
-      if (hasApplied && applyBtn) {
-        applyBtn.disabled = true;
-        applyBtn.classList.remove("btn-primary");
-        applyBtn.classList.add("btn-secondary");
-        applyBtn.innerHTML = `<i data-lucide="check" class="icon-sm"></i> Applied Already`;
-      } else if (applyBtn) {
-        applyBtn.addEventListener("click", () => {
-          openApplyModalForThisJob();
-        });
+      function syncApplyButtons(applied) {
+        if (applyBtn) {
+          applyBtn.disabled = applied;
+          if (applied) {
+            applyBtn.classList.remove("btn-primary");
+            applyBtn.classList.add("btn-secondary");
+            applyBtn.innerHTML = `<i data-lucide="check" class="icon-sm"></i> Applied Already`;
+          }
+        }
+        if (mobApplyBtn) {
+          mobApplyBtn.disabled = applied;
+          if (applied) {
+            mobApplyBtn.classList.remove("btn-primary");
+            mobApplyBtn.classList.add("btn-secondary");
+            mobApplyBtn.innerHTML = `<i data-lucide="check" class="icon-xs mr-1"></i> Applied`;
+          }
+        }
+        App.initIcons();
+      }
+
+      if (hasApplied) {
+        syncApplyButtons(true);
+      } else {
+        if (applyBtn) applyBtn.addEventListener("click", () => openApplyModalForThisJob());
+        if (mobApplyBtn) mobApplyBtn.addEventListener("click", () => openApplyModalForThisJob());
       }
 
       // Auto-trigger apply modal if URL hash is #apply
@@ -599,14 +649,8 @@
         closeModal();
         App.showToast("Your job application has been submitted successfully!", "success");
 
-        // Update button
-        if (applyBtn) {
-          applyBtn.disabled = true;
-          applyBtn.classList.remove("btn-primary");
-          applyBtn.classList.add("btn-secondary");
-          applyBtn.innerHTML = `<i data-lucide="check" class="icon-sm"></i> Applied Already`;
-          App.initIcons();
-        }
+        // Update buttons (both desktop and mobile)
+        syncApplyButtons(true);
       });
 
       App.initIcons();
