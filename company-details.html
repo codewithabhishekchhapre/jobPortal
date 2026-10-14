@@ -86,15 +86,15 @@
       </div>
 
       <!-- Company Profile Banner Card -->
-      <div class="card mb-4" style="padding: var(--space-xl);">
+      <div class="card mb-4 company-details-header-card" style="padding: var(--space-xl);">
         <div class="flex items-start justify-between flex-wrap gap-4">
-          <div class="flex items-start gap-4">
-            <div id="companyDetailLogo" class="company-logo-badge" style="width: 72px; height: 72px; font-size: 1.5rem; border-radius: var(--radius-lg);">
+          <div class="company-details-brand-wrap flex items-start gap-4">
+            <div id="companyDetailLogo" class="company-logo-badge" style="width: 72px; height: 72px; font-size: 1.5rem; border-radius: var(--radius-lg); flex-shrink: 0;">
               COMP
             </div>
             <div>
-              <div class="flex items-center gap-2">
-                <h1 id="companyDetailName" class="text-2xl font-bold">Company Name</h1>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h1 id="companyDetailName" class="text-2xl font-bold" style="word-break: break-word;">Company Name</h1>
                 <span class="badge badge-success" title="Verified Employer on JobNest">
                   <i data-lucide="check" class="icon-xs"></i> Verified
                 </span>
