@@ -18,6 +18,11 @@
   .jobs-page-layout {
     grid-template-columns: 280px 1fr !important;
   }
+
+  .job-details-layout {
+    grid-template-columns: 1.6fr 1fr !important;
+    gap: var(--space-lg);
+  }
 }
 
 /* Tablets and Mobile Landscape (<= 768px) */
@@ -69,9 +74,55 @@
     padding: var(--space-md);
   }
 
+  .search-input-group {
+    background-color: var(--background);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.65rem 0.85rem;
+  }
+
+  .search-input-group input {
+    background-color: transparent;
+    width: 100%;
+  }
+
   .hero-search-form .btn {
     width: 100%;
     margin-top: 0.25rem;
+    justify-content: center;
+  }
+
+  /* Home Page Grids & Highlights */
+  .home-metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: var(--space-md) !important;
+  }
+
+  .home-stat-card {
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 0.75rem 0.85rem !important;
+    background-color: #FFFFFF !important;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .companies-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .cta-title {
+    font-size: 1.85rem !important;
+    line-height: 1.3;
+  }
+
+  .cta-desc {
+    font-size: 1rem !important;
+    margin-bottom: 1.5rem !important;
   }
 
   /* Jobs Page Layout & Filter Drawer */
@@ -96,6 +147,61 @@
   /* Jobs Grid */
   .jobs-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Job Details Page Responsive (768px) */
+  .job-details-layout {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-lg);
+  }
+
+  .job-details-sidebar {
+    width: 100%;
+  }
+
+  .job-details-header-card,
+  .job-details-card {
+    padding: var(--space-md) !important;
+  }
+
+  .job-details-header-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-md);
+  }
+
+  .job-details-brand-wrap {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .job-detail-title {
+    font-size: 1.5rem !important;
+  }
+
+  .job-details-header-actions {
+    width: 100%;
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .job-details-header-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  /* Mobile Sticky Bottom Apply Bar */
+  .mobile-bottom-apply-bar {
+    display: flex !important;
+  }
+
+  body.has-job-details {
+    padding-bottom: 76px;
+  }
+
+  /* Company Details Banner Responsive (768px) */
+  .company-details-header-card {
+    padding: var(--space-md) !important;
   }
 
   /* Dashboard Layout */
@@ -165,12 +271,78 @@
 
 /* Small Mobile Screens (<= 480px) */
 @media (max-width: 480px) {
+  .hero-section {
+    padding: var(--space-xl) 0;
+  }
+
   .hero-title {
-    font-size: 1.75rem;
+    font-size: 1.75rem !important;
+    line-height: 1.25;
+  }
+
+  .hero-subtitle {
+    font-size: 0.925rem;
+  }
+
+  .popular-searches {
+    justify-content: flex-start;
+    font-size: 0.8rem;
+    gap: 0.35rem;
+  }
+
+  .popular-tag {
+    padding: 0.2rem 0.55rem;
+    font-size: 0.75rem;
+  }
+
+  .home-metrics-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.6rem !important;
+  }
+
+  .home-stat-card {
+    padding: 0.65rem 0.75rem !important;
   }
 
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .category-grid,
+  .companies-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-md);
+  }
+
+  .featured-jobs-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0.75rem;
+  }
+
+  .featured-jobs-header .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cta-title {
+    font-size: 1.45rem !important;
+  }
+
+  .cta-desc {
+    font-size: 0.9rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .cta-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .cta-actions .btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .job-card-footer {
@@ -188,9 +360,68 @@
     flex: 1;
   }
 
+  /* Job Details & Company Details on Small Screens */
+  .job-details-brand-wrap,
+  .company-details-brand-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .job-detail-logo {
+    width: 52px;
+    height: 52px;
+    font-size: 1.15rem;
+  }
+
+  .job-detail-title {
+    font-size: 1.35rem !important;
+    line-height: 1.3;
+  }
+
+  .job-meta-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .job-details-header-actions {
+    flex-direction: row;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .job-details-header-actions .btn {
+    flex: 1;
+    font-size: 0.875rem;
+    padding: 0.55rem 0.5rem;
+    justify-content: center;
+  }
+
+  .mobile-bottom-apply-bar {
+    padding: 0.65rem 0.85rem max(0.65rem, env(safe-area-inset-bottom, 0px)) 0.85rem;
+  }
+
+  .mobile-bottom-salary strong {
+    font-size: 0.875rem;
+  }
+
   .modal-box {
     margin: 0;
-    max-height: 95vh;
+    max-height: 94vh;
+    border-radius: var(--radius-md);
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .toast-container {
@@ -200,3 +431,4 @@
     max-width: none;
   }
 }
+
